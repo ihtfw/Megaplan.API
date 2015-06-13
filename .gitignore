@@ -187,3 +187,5 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+/src/Megaplan.API/NuGetBuild
+/src/Megaplan.API/packages
