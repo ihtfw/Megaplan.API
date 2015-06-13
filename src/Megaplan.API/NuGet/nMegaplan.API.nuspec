@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>nMegaplan.API</id>
+    <description>Simple API implementation for https://megaplan.ru/ for .net45</description>
+    <projectUrl>https://github.com/ihtfw/Megaplan.API</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/ihtfw/Megaplan.API/master/resources/icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>megaplan</tags>
+    <dependencies>
+      <group>
+        <dependency id="Newtonsoft.Json" version="6.0.7" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

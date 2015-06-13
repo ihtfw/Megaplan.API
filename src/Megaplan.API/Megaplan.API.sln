@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3D1BE95C-5CF6-4E0B-BA4C-1BD098A49DBF}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megaplan.API.Tests", "Megaplan.API.Tests\Megaplan.API.Tests.csproj", "{D95EC098-40DE-429F-B462-070F70464C5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGet", "NuGet\NuGet.csproj", "{3968CC75-B0EF-4AED-A0AE-0464E8CEF33F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megaplan.API", "Megaplan.API\Megaplan.API.csproj", "{73AADF71-5238-48F6-956D-86452A7610AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{92E67776-BFC1-4608-8F7A-864C92AB28EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D95EC098-40DE-429F-B462-070F70464C5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D95EC098-40DE-429F-B462-070F70464C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D95EC098-40DE-429F-B462-070F70464C5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D95EC098-40DE-429F-B462-070F70464C5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3968CC75-B0EF-4AED-A0AE-0464E8CEF33F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3968CC75-B0EF-4AED-A0AE-0464E8CEF33F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3968CC75-B0EF-4AED-A0AE-0464E8CEF33F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3968CC75-B0EF-4AED-A0AE-0464E8CEF33F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73AADF71-5238-48F6-956D-86452A7610AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73AADF71-5238-48F6-956D-86452A7610AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73AADF71-5238-48F6-956D-86452A7610AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73AADF71-5238-48F6-956D-86452A7610AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
