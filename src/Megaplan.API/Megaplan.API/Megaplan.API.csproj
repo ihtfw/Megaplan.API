@@ -59,6 +59,7 @@
     <Compile Include="Enums\DeadlineType.cs" />
     <Compile Include="Enums\EmployeeOrderByType.cs" />
     <Compile Include="Enums\FolderType.cs" />
+    <Compile Include="Enums\GenderType.cs" />
     <Compile Include="Enums\PhoneType.cs" />
     <Compile Include="Enums\SortByType.cs" />
     <Compile Include="Enums\SortOrderType.cs" />
@@ -69,11 +70,13 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Hashes.cs" />
     <Compile Include="HttpWebRequestExtensions.cs" />
+    <Compile Include="IMegaplanClient.cs" />
     <Compile Include="MegaplanClient.cs" />
     <Compile Include="Models\Attach.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\BoolToIntConverter.cs" />
     <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DeadlineChange.cs" />
@@ -91,6 +94,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\AddCommentQueryParams.cs" />
     <Compile Include="Queries\AllCommentsQueryParams.cs" />
+    <Compile Include="Queries\ClientsQueryParams.cs" />
     <Compile Include="Queries\CommentsQueryParams.cs" />
     <Compile Include="Queries\AddTaskQueryParams.cs" />
     <Compile Include="Queries\EmployeesQueryParams.cs" />

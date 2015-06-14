@@ -4,6 +4,7 @@
     <id>nMegaplan.API</id>
     <description>Simple API implementation for https://megaplan.ru/ for .net45</description>
     <projectUrl>https://github.com/ihtfw/Megaplan.API</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/ihtfw/Megaplan.API/master/License.txt</licenseUrl>
     <iconUrl>https://raw.githubusercontent.com/ihtfw/Megaplan.API/master/resources/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>megaplan</tags>

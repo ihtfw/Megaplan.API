@@ -18,7 +18,7 @@ namespace Megaplan.API
 
     using Task = System.Threading.Tasks.Task;
 
-    public class MegaplanClient
+    public class MegaplanClient : IMegaplanClient
     {
         private string accessId;
 
@@ -36,21 +36,17 @@ namespace Megaplan.API
         #region Cards
 
         /// <summary>
-        /// Карточка сотрудника
-        /// https://help.megaplan.ru/API_employee_card
+        /// Карточка задачи
+        /// https://help.megaplan.ru/API_task_card
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Card> Card(int id)
+        public Task<Card> Card(int id)
         {
-            var response = await GetRequest(string.Format("/BumsTaskApiV01/Task/card.api?Id={0}", id), true);
-            var content = response.Content();
-
-            var jData = ParseResponse(content);
-            var data = jData["task"].ToString();
-            var card = JsonConvert.DeserializeObject<Card>(data);
-
-            return card;
+            return MakeGetRequest<Card>("/BumsTaskApiV01/Task/card.api", "task", new
+            {
+                Id = id
+            });
         }
 
         #endregion
@@ -58,20 +54,14 @@ namespace Megaplan.API
         #region Tasks
 
         /// <summary>
+        /// Создание задачи
         /// https://help.megaplan.ru/API_task_create
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
-        public async Task<Models.Task> AddTask(AddTaskQueryParams queryParams)
+        public Task<Models.Task> AddTask(AddTaskQueryParams queryParams)
         {
-            var baseQuery = "/BumsTaskApiV01/Task/create.api";
-            var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true);
-            var content = response.Content();
-
-            var jData = ParseResponse(content);
-            var data = jData["task"].ToString();
-            var task = JsonConvert.DeserializeObject<Models.Task>(data);
-            return task;
+            return MakePostRequest<Models.Task>("/BumsTaskApiV01/Task/create.api", "task", queryParams);
         }
 
         /// <summary>
@@ -80,23 +70,9 @@ namespace Megaplan.API
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
-        public async Task<List<Models.Task>> Tasks(TasksQueryParams queryParams = null)
+        public Task<List<Models.Task>> Tasks(TasksQueryParams queryParams = null)
         {
-            var baseQuery = "/BumsTaskApiV01/Task/list.api";
-            if (queryParams != null)
-            {
-                baseQuery += new QueryBuider(queryParams).Build();
-            }
-
-            var response = await GetRequest(baseQuery, true);
-
-            var content = response.Content();
-
-            var jData = ParseResponse(content);
-            var data = jData["tasks"].ToString();
-            var tasks = JsonConvert.DeserializeObject<List<Models.Task>>(data);
-
-            return tasks;
+            return MakeGetRequest<List<Models.Task>>("/BumsTaskApiV01/Task/list.api", "tasks", queryParams);
         }
 
         #endregion
@@ -109,19 +85,9 @@ namespace Megaplan.API
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
-        public async Task<List<Comment>> Comments(CommentsQueryParams queryParams)
+        public Task<List<Comment>> Comments(CommentsQueryParams queryParams)
         {
-            var baseQuery = "/BumsCommonApiV01/Comment/list.api" + new QueryBuider(queryParams).Build();
-
-            var response = await GetRequest(baseQuery, true);
-
-            var content = response.Content();
-
-            var jData = ParseResponse(content);
-            var data = jData["comments"].ToString();
-            var comments = JsonConvert.DeserializeObject<List<Comment>>(data);
-
-            return comments;
+            return MakeGetRequest<List<Comment>>("/BumsCommonApiV01/Comment/list.api", "comments", queryParams);
         }
 
         public async Task<List<Comment>> UnreadComments(AllCommentsQueryParams queryParams)
@@ -135,19 +101,9 @@ namespace Megaplan.API
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
-        public async Task<List<Comment>> Comments(AllCommentsQueryParams queryParams)
+        public Task<List<Comment>> Comments(AllCommentsQueryParams queryParams)
         {
-            var baseQuery = "/BumsCommonApiV01/Comment/all.api" + new QueryBuider(queryParams).Build();
-
-            var response = await GetRequest(baseQuery, true);
-
-            var content = response.Content();
-
-            var jData = ParseResponse(content);
-            var data = jData["comments"].ToString();
-            var comments = JsonConvert.DeserializeObject<List<Comment>>(data);
-
-            return comments.Distinct().ToList();
+            return MakeGetRequest<List<Comment>>("/BumsCommonApiV01/Comment/all.api", "comments", queryParams);
         }
 
         /// <summary>
@@ -156,12 +112,13 @@ namespace Megaplan.API
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task MarkCommentAsRead(int id)
+        public Task MarkCommentAsRead(int id)
         {
-            var baseQuery = "/BumsCommonApiV01/Comment/markAsRead.api" +
-                            new QueryBuider(MarkCommentAsReadQueryParams.Create(id)).Build();
+            return MakePostRequest("/BumsCommonApiV01/Comment/markAsRead.api", MarkCommentAsReadQueryParams.Create(id));
+//            var baseQuery = "/BumsCommonApiV01/Comment/markAsRead.api" +
+//                           new QueryBuider(MarkCommentAsReadQueryParams.Create(id)).Build();
 
-            var response = await PostRequest(baseQuery, true);
+//            var response = await PostRequest(baseQuery, true);
         }
 
         /// <summary>
@@ -170,16 +127,9 @@ namespace Megaplan.API
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
-        public async Task<Comment> AddComment(AddCommentQueryParams queryParams)
+        public Task<Comment> AddComment(AddCommentQueryParams queryParams)
         {
-            var baseQuery = "/BumsCommonApiV01/Comment/create.api";
-            var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true);
-            var content = response.Content();
-
-            var jData = ParseResponse(content);
-            var data = jData["comment"].ToString();
-            var comment = JsonConvert.DeserializeObject<Comment>(data);
-            return comment;
+            return MakeGetRequest<Comment>("/BumsCommonApiV01/Comment/create.api", "comment", queryParams);
         }
 
         #endregion
@@ -192,39 +142,38 @@ namespace Megaplan.API
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
-        public async Task<List<Employee>> Employees(EmployeesQueryParams queryParams = null)
+        public Task<List<Employee>> Employees(EmployeesQueryParams queryParams = null)
         {
-            var baseQuery = "/BumsStaffApiV01/Employee/list.api";
-            HttpWebResponse response;
-            if (queryParams == null)
-            {
-                response = await GetRequest(baseQuery, true);
-            }
-            else
-            {
-                response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true);
-            }
-            var content = response.Content();
+            return MakePostRequest<List<Employee>>("/BumsStaffApiV01/Employee/list.api", "employees", queryParams);
+        }
 
-            var jData = ParseResponse(content);
-            var data = jData["employees"].ToString();
-            var comment = JsonConvert.DeserializeObject<List<Models.Employee>>(data);
-            return comment;
-//            var baseQuery = "/BumsStaffApiV01/Employee/list.api";
-//            if (queryParams != null)
-//            {
-//                baseQuery += new QueryBuider(queryParams).Build();
-//            }
-//
-//            var response = await GetRequest(baseQuery, true);
-//
-//            var content = response.Content();
-//
-//            var jData = ParseResponse(content);
-//            var data = jData["employees"].ToString();
-//            var employees = JsonConvert.DeserializeObject<List<Models.Employee>>(data);
-//
-//            return employees;
+        /// <summary>
+        /// Карточка сотрудника
+        /// https://help.megaplan.ru/API_employee_card
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        public Task<Employee> EmployeeCard(int id)
+        {
+            return MakePostRequest<Employee>("/BumsStaffApiV01/Employee/card.api", "employee", new
+            {
+                Id = id
+            });
+        }
+
+        #endregion
+
+        #region Clients
+
+        /// <summary>
+        /// Список клиентов
+        /// https://help.megaplan.ru/API_contractor_list
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        public Task<List<Client>> Clients(ClientsQueryParams queryParams = null)
+        {
+            return MakePostRequest<List<Client>>("/BumsCrmApiV01/Contractor/list.api", "clients", queryParams);
         }
 
         #endregion
@@ -293,6 +242,37 @@ namespace Megaplan.API
         }
 
         #region Helpers
+
+        public async Task<T> MakeGetRequest<T>(string baseQuery, string jsonKey, object queryParams = null)
+        {
+            var response = await GetRequest(baseQuery + new QueryBuider(queryParams).Build(), true);
+
+            var content = response.Content();
+
+            var jData = ParseResponse(content);
+            var data = jData[jsonKey].ToString();
+            var tasks = JsonConvert.DeserializeObject<T>(data);
+
+            return tasks;
+        }
+
+        public async Task<T> MakePostRequest<T>(string baseQuery, string jsonKey, object queryParams = null)
+        {
+            var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true);
+
+            var content = response.Content();
+
+            var jData = ParseResponse(content);
+            var data = jData[jsonKey].ToString();
+            var tasks = JsonConvert.DeserializeObject<T>(data);
+
+            return tasks;
+        }
+
+        public async Task MakePostRequest(string baseQuery, object queryParams = null)
+        {
+            var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true);
+        }
 
         [DebuggerStepThrough]
         public Task<HttpWebResponse> CreateRequest(string method, string subUrl,  byte[]postData, bool signRequest)

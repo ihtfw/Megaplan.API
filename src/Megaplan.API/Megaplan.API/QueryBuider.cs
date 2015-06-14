@@ -11,9 +11,7 @@ namespace Megaplan.API
     public class QueryBuider
     {
         private readonly object queryParams;
-
         
-
         public QueryBuider(object queryParams)
         {
             this.queryParams = queryParams;
@@ -45,6 +43,9 @@ namespace Megaplan.API
 
         private string BuildQuery()
         {
+            if (queryParams == null)
+                return null;
+
             var sb = new StringBuilder();
 
             var first = true;

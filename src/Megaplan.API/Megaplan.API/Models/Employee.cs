@@ -1,7 +1,11 @@
 ﻿using System;
+using Megaplan.API.Enums;
 
 namespace Megaplan.API.Models
 {
+    /// <summary>
+    /// https://help.megaplan.ru/API_employee_card
+    /// </summary>
     public class Employee : BaseNamedModel
     {
         /// <summary>
@@ -15,9 +19,19 @@ namespace Megaplan.API.Models
         public string FirstName { get; set; }
 
         /// <summary>
+        /// Описание
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         /// Отчество
         /// </summary>
         public string MiddleName { get; set; }
+
+        /// <summary>
+        /// Пол
+        /// </summary>
+        public GenderType? Gender { get; set; }
 
         /// <summary>
         /// Должность
@@ -30,6 +44,21 @@ namespace Megaplan.API.Models
         public Department Department { get; set; }
 
         /// <summary>
+        /// Дата рождения
+        /// </summary>
+        public DateTime? Birthday { get; set; }
+
+        /// <summary>
+        /// Скрывать дату рождения
+        /// </summary>
+        public bool HideMyBirthday { get; set; }
+
+        /// <summary>
+        /// Возраст
+        /// </summary>
+        public int? Age { get; set; }
+
+        /// <summary>
         /// Телефоны
         /// </summary>
         public Phone[] Phones { get; set; }
@@ -40,19 +69,82 @@ namespace Megaplan.API.Models
         public string Email { get; set; }
 
         /// <summary>
+        /// Icq
+        /// </summary>
+        public string Icq { get; set; }
+
+        /// <summary>
+        /// Skype
+        /// </summary>
+        public string Skype { get; set; }
+
+        /// <summary>
+        /// Jabber
+        /// </summary>
+        public string Jabber { get; set; }
+
+
+        //Address	object (Id, City, Street, House)	Адрес
+
+        /// <summary>
+        /// График работы
+        /// </summary>
+        public string Behaviour { get; set; }
+
+        /// <summary>
+        /// ИНН
+        /// </summary>
+        public string Inn { get; set; }
+
+        /// <summary>
+        /// Паспортные данные
+        /// </summary>
+        public string PassportData { get; set; }
+
+        /// <summary>
+        /// О себе
+        /// </summary>
+        public string AboutMe { get; set; }
+
+        /// <summary>
+        /// Начальники
+        /// </summary>
+        public Employee[] ChiefsWithoutMe { get; set; }
+
+        /// <summary>
+        /// Подчиненные
+        /// </summary>
+        public Employee[] SubordinatesWithoutMe { get; set; }
+
+        /// <summary>
+        /// Координаторы
+        /// </summary>
+        public Employee[] Coordinators { get; set; }
+
+        /// <summary>
         /// Статус
         /// </summary>
         public Status Status { get; set; }
 
         /// <summary>
-        /// Время создания сотрудника
+        /// Дата принятия на работу
         /// </summary>
-        public DateTime? TimeCreated { get; set; }
-        
+        public DateTime? AppearanceDay { get; set; }
+
         /// <summary>
         /// Дата увольнения
         /// </summary>
         public DateTime? FireDay { get; set; }
+
+        /// <summary>
+        /// Время создания сотрудника
+        /// </summary>
+        public DateTime? TimeCreated { get; set; }
+
+        /// <summary>
+        /// Время обновления
+        /// </summary>
+        public DateTime? TimeUpdated { get; set; }
 
         /// <summary>
         /// Относительный URL аватара сотрудника
@@ -60,8 +152,28 @@ namespace Megaplan.API.Models
         public string Avatar { get; set; }
 
         /// <summary>
+        /// Адрес большого фото сотрудника
+        /// </summary>
+        public string Photo { get; set; }
+
+        /// <summary>
         /// Логин сотрудника
         /// </summary>
         public string Login { get; set; }
+
+        /// <summary>
+        /// Дата и время последнего обращения пользователя к системе
+        /// </summary>
+        public DateTime? LastOnline { get; set; }
+
+        /// <summary>
+        /// Сейчас в Мегаплане
+        /// </summary>
+        public bool IsOnline { get; set; }
+
+        /// <summary>
+        /// Количество непрочитанных комментариев
+        /// </summary>
+        public int? UnreadCommentsCount { get; set; }
     }
 }
