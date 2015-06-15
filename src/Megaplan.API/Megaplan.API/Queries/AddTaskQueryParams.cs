@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using Megaplan.API.Attributes;
 using Megaplan.API.Enums;
 using Megaplan.API.Models;
@@ -6,6 +7,10 @@ using Newtonsoft.Json;
 
 namespace Megaplan.API.Queries
 {
+    /// <summary>
+    /// Параметры для запроса на создание задачи
+    /// https://help.megaplan.ru/API_task_create
+    /// </summary>
     public class AddTaskQueryParams
     {
         /// <summary>
@@ -133,6 +138,21 @@ namespace Megaplan.API.Queries
                 Statement = statement,
                 Responsible = responsibleId
             };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name">Название</param>
+        /// <param name="statement">Суть задачи</param>
+        /// <param name="responsibleId">Id ответсвенного</param>
+        /// <param name="customerId">Id клиента</param>
+        /// <returns></returns>
+        public static AddTaskQueryParams FromCustomer(string name, string statement, int responsibleId, int customerId)
+        {
+            var p = Simple(name, statement, responsibleId);
+            p.Customer = customerId;
+            return p;
         }
 
         /// <summary>

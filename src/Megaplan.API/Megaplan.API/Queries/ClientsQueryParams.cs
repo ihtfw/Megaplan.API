@@ -32,5 +32,13 @@ namespace Megaplan.API.Queries
         /// Номер телефона в произвольном формате
         /// </summary>
         public string Phone { get; set; }
+
+        public static ClientsQueryParams WithFilter(string filter)
+        {
+            return new ClientsQueryParams
+            {
+                Filter = filter
+            };
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace Megaplan.API.Tests
             Login = "pupkin@gmail.com";
             Password = "123456";
             ExistingEmployeeName = "Пупкин Василий";
+            ExistingClientName = "ООО Рога и Копыта";
         }
 
         public string Host { get; set; }
@@ -27,6 +28,7 @@ namespace Megaplan.API.Tests
         public string Password { get; set; }
 
         public string ExistingEmployeeName { get; set; }
+        public string ExistingClientName { get; set; }
 
         public static MegaplanClientTestsSettings Load()
         {
@@ -191,6 +193,19 @@ namespace Megaplan.API.Tests
             Assert.That(task, Is.Not.Null);
         }
 
+        [Test]
+        [Category("Manual")]
+        public async void AddTaskToEmployeeFromClientTest()
+        {
+            await Authorize();
+
+            var cl = (await client.Clients(ClientsQueryParams.WithFilter(settings.ExistingClientName))).Single();
+            var employee = (await client.Employees(EmployeesQueryParams.FilterByName(settings.ExistingEmployeeName))).Single();
+            var task = await client.AddTask(AddTaskQueryParams.FromCustomer("API Тестовое название", " API тестовоя суть задачи", employee.Id, cl.Id));
+
+            Assert.That(task, Is.Not.Null);
+        }
+
         #endregion
 
         #region Employees
@@ -233,6 +248,15 @@ namespace Megaplan.API.Tests
             var clients = await client.Clients();
 
             Assert.That(clients.Any(), Is.True);
+        }
+
+        [Test]
+        public async void ClientsFilterTest()
+        {
+            await Authorize();
+            var clients = await client.Clients(ClientsQueryParams.WithFilter(settings.ExistingClientName));
+
+            Assert.That(clients.Count, Is.EqualTo(1));
         }
 
         #endregion
