@@ -12,6 +12,10 @@ namespace Megaplan.API
     {
         bool IsAuthorized { get; }
 
+        int EmployeeId { get; }
+
+        int UserId { get; }
+
         /// <summary>
         /// Карточка сотрудника
         /// https://help.megaplan.ru/API_employee_card

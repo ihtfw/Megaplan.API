@@ -222,11 +222,15 @@ namespace Megaplan.API
 
             accessId = (string)jData["AccessId"];
             secretKey = (string)jData["SecretKey"];
-            //                userId = data.UserId;
-            //                employeeId = data.EmployeeId;
+            UserId = (int)jData["UserId"];
+            EmployeeId = (int)jData["EmployeeId"];
 
             IsAuthorized = true;
         }
+
+        public int EmployeeId { get; private set; }
+
+        public int UserId { get; private set; }
 
         private JToken ParseResponse(string response)
         {
