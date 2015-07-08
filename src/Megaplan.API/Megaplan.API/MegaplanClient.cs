@@ -129,7 +129,7 @@ namespace Megaplan.API
         /// <returns></returns>
         public Task<Comment> AddComment(AddCommentQueryParams queryParams)
         {
-            return MakeGetRequest<Comment>("/BumsCommonApiV01/Comment/create.api", "comment", queryParams);
+            return MakePostRequest<Comment>("/BumsCommonApiV01/Comment/create.api", "comment", queryParams);
         }
 
         #endregion
@@ -176,7 +176,7 @@ namespace Megaplan.API
             return MakePostRequest<List<Client>>("/BumsCrmApiV01/Contractor/list.api", "clients", queryParams);
         }
 
-        #endregion
+        #endregion  
 
 
         public async Task<DateTime> ServerTime()

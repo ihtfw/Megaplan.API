@@ -231,9 +231,8 @@ namespace Megaplan.API.Tests
         public async void AddComentWithAttchment()
         {
             await Authorize();
-            var attachment = new Attachment{ Name = "1.txt", Content = Convert.ToBase64String(System.Text.Encoding.Default.GetBytes("содержимое файла 1")) };
-            var addCommentQueryParams = AddCommentQueryParams.Task(1001615,"attach");
-            addCommentQueryParams.Attaches.Add(attachment);
+//            var attachment = new Attachment{ Name = "231.txt", Content = Convert.ToBase64String(System.Text.Encoding.Default.GetBytes("содержимое файла 1")) };
+            var addCommentQueryParams = AddCommentQueryParams.Task(1001615, "attach11").AttachFile(@"C:\Users\susloparovd.VBEST\Downloads\1436254575-17ad1ff5b5ff2f418a306e84022b5f15.jpg");
             var res = await client.AddComment(addCommentQueryParams);
 
             Assert.That(res, Is.Not.Null);

@@ -4,6 +4,7 @@ using Megaplan.API.Attributes;
 namespace Megaplan.API
 {
     using System.Collections;
+    using System.Net;
     using System.Reflection;
     using System.Text;
 
@@ -132,7 +133,7 @@ namespace Megaplan.API
             }
             sb.Append(propertyName);
             sb.Append("=");
-            sb.Append(propertyValue);
+            sb.Append(WebUtility.UrlEncode(propertyValue.ToString()));
         }
     }
 }
