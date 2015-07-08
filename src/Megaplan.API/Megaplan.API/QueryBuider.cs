@@ -3,6 +3,7 @@ using Megaplan.API.Attributes;
 
 namespace Megaplan.API
 {
+    using System.Collections;
     using System.Reflection;
     using System.Text;
 
@@ -11,7 +12,11 @@ namespace Megaplan.API
     public class QueryBuider
     {
         private readonly object queryParams;
-        
+
+        private StringBuilder sb;
+
+        private bool first;
+
         public QueryBuider(object queryParams)
         {
             this.queryParams = queryParams;
@@ -46,53 +51,88 @@ namespace Megaplan.API
             if (queryParams == null)
                 return null;
 
-            var sb = new StringBuilder();
+            sb = new StringBuilder();
 
-            var first = true;
-            foreach (var propertyInfo in queryParams.GetType().GetRuntimeProperties())
-            {
-                var value = propertyInfo.GetValue(queryParams);
-                if (value == null)
-                {
-                    continue;
-                }
-
-                if (first)
-                {
-                    first = false;
-                }
-                else
-                {
-                    sb.Append("&");
-                }
-
-                var jsonPropertyAttribute = propertyInfo.GetCustomAttribute<JsonPropertyAttribute>();
-                if (jsonPropertyAttribute != null)
-                {
-                    sb.Append(jsonPropertyAttribute.PropertyName);
-                }
-                else
-                {
-                    sb.Append(propertyInfo.Name);
-                }
-                sb.Append("=");
-
-                if (propertyInfo.GetCustomAttribute<BuildBoolAsIntAttribute>() != null)
-                {
-                    var boolValue = (bool) value;
-                    sb.Append(boolValue ? 1 : 0);
-                }
-                else if (propertyInfo.GetCustomAttribute<BuildWithoutToLowerAttribute>() != null)
-                {
-                    sb.Append(value);
-                }
-                else
-                {
-                    sb.Append(value.ToString().ToLower());
-                }
-            }
+            first = true;
+            ProcessObject(queryParams);
 
             return sb.ToString();
+        }
+
+        private void ProcessObject(object obj, string prefix = "")
+        {
+            foreach (var propertyInfo in obj.GetType().GetRuntimeProperties())
+            {
+                var propertyName = GetPropertyName(propertyInfo);
+
+                var propertyValue = GetPropertyValue(propertyInfo, obj);
+         
+
+                var arrayAttribute = propertyInfo.GetCustomAttribute<ArrayAttribute>();
+                if (arrayAttribute != null)
+                {
+                
+
+                    var array = (IEnumerable)propertyValue;
+                    int i = 0;
+                    foreach (var value in array)
+                    {
+                        var subobjectPrefix = arrayAttribute.Mask.Replace("%", i++.ToString());
+                        ProcessObject(value, subobjectPrefix);
+                    }
+                    return;
+                }
+
+                AddProperty(prefix + propertyName, propertyValue);
+            }
+        }
+
+        private static string GetPropertyName(PropertyInfo propertyInfo)
+        {
+            var jsonPropertyAttribute = propertyInfo.GetCustomAttribute<JsonPropertyAttribute>();
+
+            var propertyName = jsonPropertyAttribute != null ? jsonPropertyAttribute.PropertyName : propertyInfo.Name;
+            return propertyName;
+        }
+
+        private object GetPropertyValue(PropertyInfo propertyInfo, object obj)
+        {
+            object propertyValue = propertyInfo.GetValue(obj);
+            if (propertyValue == null)
+                return null;
+            if (propertyInfo.GetCustomAttribute<BuildBoolAsIntAttribute>() != null)
+            {
+                var boolValue = (bool)propertyValue;
+                propertyValue = boolValue ? 1 : 0;
+            }
+            else if (propertyValue is IEnumerable)
+            {
+                
+            }
+            else if (propertyInfo.GetCustomAttribute<BuildWithoutToLowerAttribute>() == null)
+            {
+                propertyValue = propertyValue.ToString().ToLower();
+            }
+            return propertyValue;
+        }
+
+        private void AddProperty(string propertyName, object propertyValue)
+        {
+            if (propertyValue == null)
+            {
+                return;
+            }
+            if (first)
+            {
+                first = false;
+            }
+            else
+            {
+                sb.Append("&");
+            }
+            sb.Append(propertyName);
+            sb.Append("=");
+            sb.Append(propertyValue);
         }
     }
 }

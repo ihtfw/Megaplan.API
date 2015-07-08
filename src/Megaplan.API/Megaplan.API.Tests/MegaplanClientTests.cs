@@ -7,6 +7,8 @@ namespace Megaplan.API.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+
     using Megaplan.API.Models;
     using Megaplan.API.Queries;
     using NUnit.Framework;
@@ -76,6 +78,9 @@ namespace Megaplan.API.Tests
 
             Assert.That(client.IsAuthorized, Is.False);
         }
+
+
+
 
         [Test]
         public async void AuthorizeWithCorrectLoginPass()
@@ -174,8 +179,6 @@ namespace Megaplan.API.Tests
         public async void AddTaskTest()
         {
             await Authorize();
-
-//            var task = await client.AddTask(AddTaskQueryParams.Simple("Тестовое название", "тестовоя суть задачи", 1000025));
             var task = await client.AddTask(AddTaskQueryParams.Simple("Тестовое название", "тестовоя суть задачи", 1000001));
 
             Assert.That(task, Is.Not.Null);
@@ -188,7 +191,7 @@ namespace Megaplan.API.Tests
             await Authorize();
 
             var employee = (await client.Employees(EmployeesQueryParams.FilterByName(settings.ExistingEmployeeName))).Single();
-            var task = await client.AddTask(AddTaskQueryParams.Simple("API Тестовое название", " API тестовоя суть задачи", employee.Id));
+            var task = await client.AddTask(AddTaskQueryParams.Simple("API Тестовое название", " API тестовя суть задачи", employee.Id));
 
             Assert.That(task, Is.Not.Null);
         }
@@ -204,6 +207,36 @@ namespace Megaplan.API.Tests
             var task = await client.AddTask(AddTaskQueryParams.FromCustomer("API Тестовое название", " API тестовоя суть задачи", employee.Id, cl.Id));
 
             Assert.That(task, Is.Not.Null);
+        }
+
+
+        [Test]
+        [Category("Manual")]
+        public async void AddTaskTestWithAttachment()
+        {
+            await Authorize();
+            var addTaskQueryParams = AddTaskQueryParams.Simple("Тестовое название", "тестовая суть задачи", 1000001);
+            addTaskQueryParams.Attaches.Add(new Attachment{ Name = "1.txt", Content = Convert.ToBase64String(System.Text.Encoding.Default.GetBytes("содержимое файла 1"))});
+            addTaskQueryParams.Attaches.Add(new Attachment{ Name = "2.txt", Content =  Convert.ToBase64String(System.Text.Encoding.Default.GetBytes("содержимое файла 2"))});
+            var task = await client.AddTask(addTaskQueryParams);
+
+            Assert.That(task, Is.Not.Null);
+        }
+
+
+
+
+        [Test]
+        [Category("Manual")]
+        public async void AddComentWithAttchment()
+        {
+            await Authorize();
+            var attachment = new Attachment{ Name = "1.txt", Content = Convert.ToBase64String(System.Text.Encoding.Default.GetBytes("содержимое файла 1")) };
+            var addCommentQueryParams = AddCommentQueryParams.Task(1001615,"attach");
+            addCommentQueryParams.Attaches.Add(attachment);
+            var res = await client.AddComment(addCommentQueryParams);
+
+            Assert.That(res, Is.Not.Null);
         }
 
         #endregion

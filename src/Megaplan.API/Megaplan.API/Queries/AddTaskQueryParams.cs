@@ -7,12 +7,19 @@ using Newtonsoft.Json;
 
 namespace Megaplan.API.Queries
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Параметры для запроса на создание задачи
     /// https://help.megaplan.ru/API_task_create
     /// </summary>
     public class AddTaskQueryParams
     {
+        public AddTaskQueryParams()
+        {
+            Attaches = new List<Attachment>();
+        }
+
         /// <summary>
         /// Название
         /// Обязательное поле
@@ -90,7 +97,11 @@ namespace Megaplan.API.Queries
         [JsonProperty("Model[Statement]")]
         public string Statement { get; set; }
 
-        /*
+        [Array("Model[Attaches][Add][%]")]
+        public List<Attachment> Attaches { get; set; }
+
+
+            /*
          * Model[Attaches][Add]	array	Массив приложенных файлов	Должен передаваться POST-запросом
          * Model[Attaches][Add][0...n][Content]	string	Данные (контент) файла, закодированные с использованием MIME base64	В устаревших версиях Мегаплана может действовать имя параметра Model[Attaches][Add][][Context]
          * Model[Attaches][Add][0...n][Name]	string	Имя файла	Будет фигурировать при выводе задачи
@@ -139,6 +150,13 @@ namespace Megaplan.API.Queries
                 Responsible = responsibleId
             };
         }
+
+        public AddTaskQueryParams AttachFile(string path)
+        {
+            Attaches.Add(new Attachment(path));
+            return this;
+        }
+
 
         /// <summary>
         /// 

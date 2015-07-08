@@ -16,6 +16,10 @@
             Assert.AreEqual("", sut.Build());
         }
 
+
+
+
+
         [Test]
         public void OnlyActualTest()
         {
@@ -85,5 +89,22 @@
 
             Assert.AreEqual("?SortBy=completed&SortOrder=asc", sut.Build());
         }
+
+
+
+        [Test]
+        public void ArrayTest()
+        {
+            var addTaskQueryParams = AddTaskQueryParams.Simple("name", "statement", 1);
+            addTaskQueryParams.Attaches.Add(new Attachment{ Name = "file1", Content = "content1"});
+            addTaskQueryParams.Attaches.Add(new Attachment{ Name = "file2", Content = "content2"});
+
+
+            var sut = new QueryBuider(addTaskQueryParams);
+
+            var actual = sut.Build();
+            Assert.AreEqual("?Model[Name]=name&Model[Responsible]=1&Model[IsGroup]=0&Model[Statement]=statement&Model[Attaches][Add][0][Name]=file1&Model[Attaches][Add][0][Content]=content1&Model[Attaches][Add][1][Name]=file2&Model[Attaches][Add][1][Content]=content2", actual);
+        }
+
     }
 }

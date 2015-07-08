@@ -1,13 +1,20 @@
 namespace Megaplan.API.Queries
 {
     using System;
+    using System.Collections.Generic;
 
+    using Megaplan.API.Attributes;
     using Megaplan.API.Enums;
 
     using Newtonsoft.Json;
 
     public class AddCommentQueryParams
     {
+        public AddCommentQueryParams()
+        {
+            Attaches = new List<Attachment>();
+        }
+
         /// <summary>
         /// Тип комментируемого объекта
         /// </summary>
@@ -34,7 +41,18 @@ namespace Megaplan.API.Queries
         /// Дата, на которую списаны потраченные часы
         /// </summary>
         [JsonProperty("Model[WorkDate]")]
-        public DateTime? WorkDate { get; set; }        
+        public DateTime? WorkDate { get; set; }
+
+
+        [Array("Model[Attaches][%]")]
+        public List<Attachment> Attaches { get; set; }
+
+
+        public AddCommentQueryParams AttachFile(string path)
+        {
+            Attaches.Add(new Attachment(path));
+            return this;
+        }
 
         public static AddCommentQueryParams Task(int id, string text)
         {

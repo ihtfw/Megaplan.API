@@ -55,7 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\BuildBoolAsIntAttribute.cs" />
+    <Compile Include="Attributes\PropAttributes.cs" />
     <Compile Include="Enums\DeadlineType.cs" />
     <Compile Include="Enums\EmployeeOrderByType.cs" />
     <Compile Include="Enums\FolderType.cs" />
@@ -94,6 +94,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\AddCommentQueryParams.cs" />
     <Compile Include="Queries\AllCommentsQueryParams.cs" />
+    <Compile Include="Queries\Attachment.cs" />
     <Compile Include="Queries\ClientsQueryParams.cs" />
     <Compile Include="Queries\CommentsQueryParams.cs" />
     <Compile Include="Queries\AddTaskQueryParams.cs" />
