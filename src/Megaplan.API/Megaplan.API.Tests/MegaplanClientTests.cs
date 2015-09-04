@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
+using System.Threading;
 using Newtonsoft.Json;
 
 namespace Megaplan.API.Tests
@@ -139,6 +141,21 @@ namespace Megaplan.API.Tests
             var afterComments = await client.UnreadComments(AllCommentsQueryParams.Actual());
 
             Assert.AreEqual(comments.Count - 1, afterComments.Count);
+        }
+
+
+        [Test]
+        [Category("Manual")]
+        public async void DownloadFile()
+        {
+            await Authorize();
+
+            var comments = await client.Comments(CommentsQueryParams.Task(1001702));
+            var attach = comments.First().Attaches.First();
+            var cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.Cancel();
+            IProgress<DownloadProgressArgs> progress = new Progress<DownloadProgressArgs>();
+            await client.Download(attach.Url, $@"D:\{attach.Name}", cancellationTokenSource.Token, progress);
         }
 
         [Test]

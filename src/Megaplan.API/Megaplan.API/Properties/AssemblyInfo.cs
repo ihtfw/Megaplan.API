@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
-//      Minor Version 
+//      Minor Version   
 //      Build Number
 //      Revision
 //
@@ -38,5 +38,5 @@ using System.Runtime.InteropServices;
 
 internal static class Constants
 {
-    public const string Version = "1.0.1";
+    public const string Version = "1.2.2";
 }

@@ -1,4 +1,6 @@
-﻿namespace Megaplan.API.Models
+﻿using Megaplan.API.Enums;
+
+namespace Megaplan.API.Models
 {
     using System;
     using System.Collections.Generic;
@@ -42,5 +44,9 @@
         /// еотвеченный запрос на перенос дедлайна
         /// </summary>
         public DeadlineChange DeadlineChange { get; set; }
+
+
+
+        public StatusType Status { get; set; }
     }
 }

@@ -1,30 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Megaplan.API.Enums;
+using Megaplan.API.Exceptions;
+using Megaplan.API.Models;
+using Megaplan.API.Queries;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Task = System.Threading.Tasks.Task;
 
 namespace Megaplan.API
 {
-    using System.Diagnostics;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-
-    using Megaplan.API.Exceptions;
-    using Megaplan.API.Models;
-    using Megaplan.API.Queries;
-
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-
-    using Task = System.Threading.Tasks.Task;
-
     public class MegaplanClient : IMegaplanClient
     {
-        private string accessId;
-
-        private string secretKey;
-
         private readonly string host;
+        private string accessId;
+        private string secretKey;
 
         public MegaplanClient(string host)
         {
@@ -36,8 +33,8 @@ namespace Megaplan.API
         #region Cards
 
         /// <summary>
-        /// Карточка задачи
-        /// https://help.megaplan.ru/API_task_card
+        ///     Карточка задачи
+        ///     https://help.megaplan.ru/API_task_card
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -51,123 +48,11 @@ namespace Megaplan.API
 
         #endregion
 
-        #region Tasks
-
-        /// <summary>
-        /// Создание задачи
-        /// https://help.megaplan.ru/API_task_create
-        /// </summary>
-        /// <param name="queryParams"></param>
-        /// <returns></returns>
-        public Task<Models.Task> AddTask(AddTaskQueryParams queryParams)
-        {
-            return MakePostRequest<Models.Task>("/BumsTaskApiV01/Task/create.api", "task", queryParams);
-        }
-
-        /// <summary>
-        /// Список задач
-        /// https://help.megaplan.ru/API_task_list
-        /// </summary>
-        /// <param name="queryParams"></param>
-        /// <returns></returns>
-        public Task<List<Models.Task>> Tasks(TasksQueryParams queryParams = null)
-        {
-            return MakeGetRequest<List<Models.Task>>("/BumsTaskApiV01/Task/list.api", "tasks", queryParams);
-        }
-
-        #endregion
-
-        #region Comments
-
-        /// <summary>
-        /// Список комментариев по задаче/проекту
-        ///https://help.megaplan.ru/API_comment_list
-        /// </summary>
-        /// <param name="queryParams"></param>
-        /// <returns></returns>
-        public Task<List<Comment>> Comments(CommentsQueryParams queryParams)
-        {
-            return MakeGetRequest<List<Comment>>("/BumsCommonApiV01/Comment/list.api", "comments", queryParams);
-        }
-
-        public async Task<List<Comment>> UnreadComments(AllCommentsQueryParams queryParams)
-        {
-            return (await Comments(queryParams)).Where(c => c.IsUnread).ToList();
-        }
-
-        /// <summary>
-        /// Список всех комментариев по актуальным задачам и проектам
-        /// https://help.megaplan.ru/API_comment_all
-        /// </summary>
-        /// <param name="queryParams"></param>
-        /// <returns></returns>
-        public Task<List<Comment>> Comments(AllCommentsQueryParams queryParams)
-        {
-            return MakeGetRequest<List<Comment>>("/BumsCommonApiV01/Comment/all.api", "comments", queryParams);
-        }
-
-        /// <summary>
-        /// Отметить комментарий как прочитанный
-        /// https://help.megaplan.ru/API_comment_mark_as_read
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public Task MarkCommentAsRead(int id)
-        {
-            return MakePostRequest("/BumsCommonApiV01/Comment/markAsRead.api", MarkCommentAsReadQueryParams.Create(id));
-//            var baseQuery = "/BumsCommonApiV01/Comment/markAsRead.api" +
-//                           new QueryBuider(MarkCommentAsReadQueryParams.Create(id)).Build();
-
-//            var response = await PostRequest(baseQuery, true);
-        }
-
-        /// <summary>
-        /// Создание комментария
-        /// https://help.megaplan.ru/API_comment_create
-        /// </summary>
-        /// <param name="queryParams"></param>
-        /// <returns></returns>
-        public Task<Comment> AddComment(AddCommentQueryParams queryParams)
-        {
-            return MakePostRequest<Comment>("/BumsCommonApiV01/Comment/create.api", "comment", queryParams);
-        }
-
-        #endregion
-
-        #region Employees
-
-        /// <summary>
-        /// Список сотрудников
-        /// https://help.megaplan.ru/API_employee_list
-        /// </summary>
-        /// <param name="queryParams"></param>
-        /// <returns></returns>
-        public Task<List<Employee>> Employees(EmployeesQueryParams queryParams = null)
-        {
-            return MakePostRequest<List<Employee>>("/BumsStaffApiV01/Employee/list.api", "employees", queryParams);
-        }
-
-        /// <summary>
-        /// Карточка сотрудника
-        /// https://help.megaplan.ru/API_employee_card
-        /// </summary>
-        /// <param name="queryParams"></param>
-        /// <returns></returns>
-        public Task<Employee> EmployeeCard(int id)
-        {
-            return MakePostRequest<Employee>("/BumsStaffApiV01/Employee/card.api", "employee", new
-            {
-                Id = id
-            });
-        }
-
-        #endregion
-
         #region Clients
 
         /// <summary>
-        /// Список клиентов
-        /// https://help.megaplan.ru/API_contractor_list
+        ///     Список клиентов
+        ///     https://help.megaplan.ru/API_contractor_list
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
@@ -176,8 +61,7 @@ namespace Megaplan.API
             return MakePostRequest<List<Client>>("/BumsCrmApiV01/Contractor/list.api", "clients", queryParams);
         }
 
-        #endregion  
-
+        #endregion
 
         public async Task<DateTime> ServerTime()
         {
@@ -186,7 +70,7 @@ namespace Megaplan.API
             var content = response.Content();
 
             var jData = ParseResponse(content);
-            var datetime = (string)jData["datetime"];
+            var datetime = (string) jData["datetime"];
             return DateTime.Parse(datetime);
         }
 
@@ -197,7 +81,11 @@ namespace Megaplan.API
             try
             {
                 var passHash = Hashes.MD5(pass);
-                response = await PostRequest(string.Format("/BumsCommonApiV01/User/authorize.api?Login={0}&Password={1}", login, passHash), false);
+                response =
+                    await
+                        PostRequest(
+                            string.Format("/BumsCommonApiV01/User/authorize.api?Login={0}&Password={1}", login, passHash),
+                            false);
             }
             catch (WebException e)
             {
@@ -220,30 +108,153 @@ namespace Megaplan.API
             var content = response.Content();
             var jData = ParseResponse(content);
 
-            accessId = (string)jData["AccessId"];
-            secretKey = (string)jData["SecretKey"];
-            UserId = (int)jData["UserId"];
-            EmployeeId = (int)jData["EmployeeId"];
+            accessId = (string) jData["AccessId"];
+            secretKey = (string) jData["SecretKey"];
+            UserId = (int) jData["UserId"];
+            EmployeeId = (int) jData["EmployeeId"];
 
             IsAuthorized = true;
         }
 
         public int EmployeeId { get; private set; }
-
         public int UserId { get; private set; }
 
         private JToken ParseResponse(string response)
         {
             var jObject = JObject.Parse(response);
-            if ((string)jObject["status"]["code"] != "ok")
+            if ((string) jObject["status"]["code"] != "ok")
             {
-                throw new HttpRequestException((string)jObject["status"]["error"]);
+                throw new HttpRequestException((string) jObject["status"]["error"]);
             }
 #if DEBUG
             Debug.WriteLine("data {0}", jObject["data"].ToString());
 #endif
             return jObject["data"];
         }
+
+        #region Tasks
+
+        /// <summary>
+        ///     Создание задачи
+        ///     https://help.megaplan.ru/API_task_create
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        public Task<Models.Task> AddTask(AddTaskQueryParams queryParams)
+        {
+            return MakePostRequest<Models.Task>("/BumsTaskApiV01/Task/create.api", "task", queryParams);
+        }
+
+        /// <summary>
+        ///     Список задач
+        ///     https://help.megaplan.ru/API_task_list
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        public Task<List<Models.Task>> Tasks(TasksQueryParams queryParams = null)
+        {
+            return MakeGetRequest<List<Models.Task>>("/BumsTaskApiV01/Task/list.api", "tasks", queryParams);
+        }
+
+        #endregion
+
+        #region Comments
+
+        /// <summary>
+        ///     Список комментариев по задаче/проекту
+        ///     https://help.megaplan.ru/API_comment_list
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        public Task<List<Comment>> Comments(CommentsQueryParams queryParams)
+        {
+            return MakeGetRequest<List<Comment>>("/BumsCommonApiV01/Comment/list.api", "comments", queryParams);
+        }
+
+        public async Task<List<Comment>> UnreadComments(AllCommentsQueryParams queryParams)
+        {
+            return (await Comments(queryParams)).Where(c => c.IsUnread).ToList();
+        }
+
+        /// <summary>
+        ///     Список всех комментариев по актуальным задачам и проектам
+        ///     https://help.megaplan.ru/API_comment_all
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        public Task<List<Comment>> Comments(AllCommentsQueryParams queryParams)
+        {
+            return MakeGetRequest<List<Comment>>("/BumsCommonApiV01/Comment/all.api", "comments", queryParams);
+        }
+
+        /// <summary>
+        ///     Отметить комментарий как прочитанный
+        ///     https://help.megaplan.ru/API_comment_mark_as_read
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Task MarkCommentAsRead(int id)
+        {
+            return MakePostRequest("/BumsCommonApiV01/Comment/markAsRead.api", MarkCommentAsReadQueryParams.Create(id));
+//            var baseQuery = "/BumsCommonApiV01/Comment/markAsRead.api" +
+//                           new QueryBuider(MarkCommentAsReadQueryParams.Create(id)).Build();
+
+//            var response = await PostRequest(baseQuery, true);
+        }
+
+        /// <summary>
+        ///     Создание комментария
+        ///     https://help.megaplan.ru/API_comment_create
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        public Task<Comment> AddComment(AddCommentQueryParams queryParams)
+        {
+            return MakePostRequest<Comment>("/BumsCommonApiV01/Comment/create.api", "comment", queryParams);
+        }
+
+        #endregion
+
+        #region Employees
+
+        /// <summary>
+        ///     Список сотрудников
+        ///     https://help.megaplan.ru/API_employee_list
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        public Task<List<Employee>> Employees(EmployeesQueryParams queryParams = null)
+        {
+            return MakePostRequest<List<Employee>>("/BumsStaffApiV01/Employee/list.api", "employees", queryParams);
+        }
+
+        /// <summary>
+        ///     Карточка сотрудника
+        ///     https://help.megaplan.ru/API_employee_card
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        public Task<Employee> EmployeeCard(int id)
+        {
+            return MakePostRequest<Employee>("/BumsStaffApiV01/Employee/card.api", "employee", new
+            {
+                Id = id
+            });
+        }
+
+        #endregion
+
+
+
+        public Task TaskAction(int taskId, ActionEnum action)
+        {
+            return MakePostRequest("/BumsTaskApiV01/Task/action.api", new
+            {
+                Id = taskId,
+                Action = action
+            });
+        }
+
 
         #region Helpers
 
@@ -279,7 +290,7 @@ namespace Megaplan.API
         }
 
         [DebuggerStepThrough]
-        public Task<HttpWebResponse> CreateRequest(string method, string subUrl,  byte[]postData, bool signRequest)
+        public Task<HttpWebResponse> CreateRequest(string method, string subUrl, byte[] postData, bool signRequest)
         {
 #if DEBUG
             Debug.WriteLine("{0}:\t{1} | {2}", method, subUrl, signRequest);
@@ -287,7 +298,7 @@ namespace Megaplan.API
             Request request;
             if (signRequest)
             {
-                request = new Request(method, host, subUrl, postData,accessId, secretKey);
+                request = new Request(method, host, subUrl, postData, accessId, secretKey);
             }
             else
             {
@@ -295,6 +306,40 @@ namespace Megaplan.API
             }
 
             return request.GetResponse();
+        }
+
+
+        public async Task Download(string url, string path, CancellationToken ct, IProgress<DownloadProgressArgs> progress)
+        {
+            var bufferSize = 2048;
+            var bufferBytes = new byte[bufferSize];
+            try
+            {
+                var respone = await GetRequest(url, true);
+                var totalSize = long.Parse(respone.Headers["Content-Length"]);
+                using (var responseStream = respone.GetResponseStream())
+                {
+                    using (var filestream = new FileStream(path, FileMode.OpenOrCreate))
+                    {
+                        while (true)
+                        {
+                            ct.ThrowIfCancellationRequested();
+                            var readSize = await responseStream.ReadAsync(bufferBytes, 0, bufferBytes.Length, ct);
+                            if (readSize == 0)
+                                break;
+                            // Cancle download file 
+                            await filestream.WriteAsync(bufferBytes, 0, readSize, ct);
+                            var args = new DownloadProgressArgs(filestream.Position, totalSize);
+                            progress.Report(args);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                File.Delete(path);
+                throw;
+            }
         }
 
         [DebuggerStepThrough]
@@ -310,7 +355,7 @@ namespace Megaplan.API
         }
 
         [DebuggerStepThrough]
-        public Task<HttpWebResponse> PostRequest(string subUrl, byte[]postData, bool signRequest)
+        public Task<HttpWebResponse> PostRequest(string subUrl, byte[] postData, bool signRequest)
         {
             return CreateRequest("POST", subUrl, postData, signRequest);
         }
@@ -322,5 +367,17 @@ namespace Megaplan.API
         }
 
         #endregion
+    }
+
+    public class DownloadProgressArgs
+    {
+        public DownloadProgressArgs(long position, long totalSize)
+        {
+            Position = position;
+            TotalSize = totalSize;
+        }
+
+        public long Position { get; set; }
+        public long TotalSize { get; set; }
     }
 }

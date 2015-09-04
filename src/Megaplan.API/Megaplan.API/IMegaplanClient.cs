@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Megaplan.API.Enums;
 using Megaplan.API.Exceptions;
 using Megaplan.API.Models;
 using Megaplan.API.Queries;
@@ -102,5 +103,7 @@ namespace Megaplan.API
         /// <param name="queryParams"></param>
         /// <returns></returns>
         Task<Employee> EmployeeCard(int id);
+
+        System.Threading.Tasks.Task TaskAction(int taskId, ActionEnum action);
     }
 }
