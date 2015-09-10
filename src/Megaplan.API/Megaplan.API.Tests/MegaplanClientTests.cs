@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Threading;
+using Megaplan.API.Enums;
 using Newtonsoft.Json;
 
 namespace Megaplan.API.Tests
@@ -146,7 +147,33 @@ namespace Megaplan.API.Tests
 
         [Test]
         [Category("Manual")]
-        public async void DownloadFile()
+        public async void DeadLock()
+        {
+            await Authorize();
+            var id = 1001702;
+            Card card;
+//            for (int a = 0; a < 1000; a++)
+//            {
+//                card = await client.Card(id);
+//            }
+            card = await client.Card(1001713);
+            await client.TaskAction(id, ActionEnum.act_done);
+//            card = await client.Card(id);
+            await client.TaskAction(id, ActionEnum.act_resume);
+
+            await client.TaskAction(id, ActionEnum.act_done);
+            //            card = await client.Card(id);
+
+
+            //            card = await client.Card(id);
+            Console.Out.WriteLine("Yay");
+        }
+
+
+
+        [Test]
+        [Category("Manual")]
+        public async void DownloadFile() 
         {
             await Authorize();
 

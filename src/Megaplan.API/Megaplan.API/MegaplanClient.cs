@@ -1,26 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Megaplan.API.Enums;
-using Megaplan.API.Exceptions;
-using Megaplan.API.Models;
-using Megaplan.API.Queries;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Task = System.Threading.Tasks.Task;
-
-namespace Megaplan.API
+﻿namespace Megaplan.API
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using Megaplan.API.Enums;
+    using Megaplan.API.Exceptions;
+    using Megaplan.API.Models;
+    using Megaplan.API.Queries;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
+    using Task = System.Threading.Tasks.Task;
+
     public class MegaplanClient : IMegaplanClient
     {
         private readonly string host;
+
         private string accessId;
+
         private string secretKey;
 
         public MegaplanClient(string host)
@@ -41,9 +46,9 @@ namespace Megaplan.API
         public Task<Card> Card(int id)
         {
             return MakeGetRequest<Card>("/BumsTaskApiV01/Task/card.api", "task", new
-            {
-                Id = id
-            });
+                                                                                 {
+                                                                                     Id = id
+                                                                                 });
         }
 
         #endregion
@@ -70,7 +75,7 @@ namespace Megaplan.API
             var content = response.Content();
 
             var jData = ParseResponse(content);
-            var datetime = (string) jData["datetime"];
+            var datetime = (string)jData["datetime"];
             return DateTime.Parse(datetime);
         }
 
@@ -108,23 +113,33 @@ namespace Megaplan.API
             var content = response.Content();
             var jData = ParseResponse(content);
 
-            accessId = (string) jData["AccessId"];
-            secretKey = (string) jData["SecretKey"];
-            UserId = (int) jData["UserId"];
-            EmployeeId = (int) jData["EmployeeId"];
+            accessId = (string)jData["AccessId"];
+            secretKey = (string)jData["SecretKey"];
+            UserId = (int)jData["UserId"];
+            EmployeeId = (int)jData["EmployeeId"];
 
             IsAuthorized = true;
         }
 
         public int EmployeeId { get; private set; }
+
         public int UserId { get; private set; }
+
+        public Task TaskAction(int taskId, ActionEnum action)
+        {
+            return MakePostRequest("/BumsTaskApiV01/Task/action.api", new
+                                                                      {
+                                                                          Id = taskId,
+                                                                          Action = action
+                                                                      });
+        }
 
         private JToken ParseResponse(string response)
         {
             var jObject = JObject.Parse(response);
-            if ((string) jObject["status"]["code"] != "ok")
+            if ((string)jObject["status"]["code"] != "ok")
             {
-                throw new HttpRequestException((string) jObject["status"]["error"]);
+                throw new HttpRequestException((string)jObject["status"]["error"]);
             }
 #if DEBUG
             Debug.WriteLine("data {0}", jObject["data"].ToString());
@@ -196,10 +211,10 @@ namespace Megaplan.API
         public Task MarkCommentAsRead(int id)
         {
             return MakePostRequest("/BumsCommonApiV01/Comment/markAsRead.api", MarkCommentAsReadQueryParams.Create(id));
-//            var baseQuery = "/BumsCommonApiV01/Comment/markAsRead.api" +
-//                           new QueryBuider(MarkCommentAsReadQueryParams.Create(id)).Build();
+            //            var baseQuery = "/BumsCommonApiV01/Comment/markAsRead.api" +
+            //                           new QueryBuider(MarkCommentAsReadQueryParams.Create(id)).Build();
 
-//            var response = await PostRequest(baseQuery, true);
+            //            var response = await PostRequest(baseQuery, true);
         }
 
         /// <summary>
@@ -234,27 +249,15 @@ namespace Megaplan.API
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
-        public Task<Employee> EmployeeCard(int id)
+        public async Task<Employee> EmployeeCard(int id)
         {
-            return MakePostRequest<Employee>("/BumsStaffApiV01/Employee/card.api", "employee", new
-            {
-                Id = id
-            });
+            return await MakePostRequest<Employee>("/BumsStaffApiV01/Employee/card.api", "employee", new
+                                                                                                     {
+                                                                                                         Id = id
+                                                                                                     });
         }
 
         #endregion
-
-
-
-        public Task TaskAction(int taskId, ActionEnum action)
-        {
-            return MakePostRequest("/BumsTaskApiV01/Task/action.api", new
-            {
-                Id = taskId,
-                Action = action
-            });
-        }
-
 
         #region Helpers
 
@@ -267,7 +270,7 @@ namespace Megaplan.API
             var jData = ParseResponse(content);
             var data = jData[jsonKey].ToString();
             var tasks = JsonConvert.DeserializeObject<T>(data);
-
+            response.Close();
             return tasks;
         }
 
@@ -280,17 +283,18 @@ namespace Megaplan.API
             var jData = ParseResponse(content);
             var data = jData[jsonKey].ToString();
             var tasks = JsonConvert.DeserializeObject<T>(data);
-
+            response.Close();
             return tasks;
         }
 
         public async Task MakePostRequest(string baseQuery, object queryParams = null)
         {
             var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true);
+            response.Close();
         }
 
         [DebuggerStepThrough]
-        public Task<HttpWebResponse> CreateRequest(string method, string subUrl, byte[] postData, bool signRequest)
+        public async Task<HttpWebResponse> CreateRequest(string method, string subUrl, byte[] postData, bool signRequest)
         {
 #if DEBUG
             Debug.WriteLine("{0}:\t{1} | {2}", method, subUrl, signRequest);
@@ -305,9 +309,8 @@ namespace Megaplan.API
                 request = new Request(method, host, subUrl, postData);
             }
 
-            return request.GetResponse();
+            return await request.GetResponse();
         }
-
 
         public async Task Download(string url, string path, CancellationToken ct, IProgress<DownloadProgressArgs> progress)
         {
@@ -326,7 +329,9 @@ namespace Megaplan.API
                             ct.ThrowIfCancellationRequested();
                             var readSize = await responseStream.ReadAsync(bufferBytes, 0, bufferBytes.Length, ct);
                             if (readSize == 0)
+                            {
                                 break;
+                            }
                             // Cancle download file 
                             await filestream.WriteAsync(bufferBytes, 0, readSize, ct);
                             var args = new DownloadProgressArgs(filestream.Position, totalSize);
@@ -341,6 +346,8 @@ namespace Megaplan.API
                 throw;
             }
         }
+   
+
 
         [DebuggerStepThrough]
         public Task<HttpWebResponse> GetRequest(string subUrl, bool signRequest)
@@ -367,17 +374,5 @@ namespace Megaplan.API
         }
 
         #endregion
-    }
-
-    public class DownloadProgressArgs
-    {
-        public DownloadProgressArgs(long position, long totalSize)
-        {
-            Position = position;
-            TotalSize = totalSize;
-        }
-
-        public long Position { get; set; }
-        public long TotalSize { get; set; }
     }
 }

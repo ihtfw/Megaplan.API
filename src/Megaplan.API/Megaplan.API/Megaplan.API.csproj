@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\PropAttributes.cs" />
+    <Compile Include="DownloadProgressArgs.cs" />
     <Compile Include="Enums\ActionEnum.cs" />
     <Compile Include="Enums\DeadlineType.cs" />
     <Compile Include="Enums\EmployeeOrderByType.cs" />

@@ -48,5 +48,10 @@ namespace Megaplan.API.Models
 
 
         public StatusType Status { get; set; }
+
+        /// <summary>
+        /// Файлы, прикрепленные 
+        /// </summary>
+        public List<Attach> Attaches { get; set; }
     }
 }
