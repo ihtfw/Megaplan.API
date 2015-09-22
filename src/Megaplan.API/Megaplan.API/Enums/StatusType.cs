@@ -61,6 +61,9 @@ namespace Megaplan.API.Enums
         /// </summary>
         Expired,
 
-        Assigned
+        Assigned,
+        Rejected
+
+
     }
 }
