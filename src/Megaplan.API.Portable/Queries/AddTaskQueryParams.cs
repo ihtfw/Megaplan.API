@@ -151,12 +151,18 @@ namespace Megaplan.API.Queries
             };
         }
 
+#if !PCL
         public AddTaskQueryParams AttachFile(string path)
         {
             Attaches.Add(new Attachment(path));
             return this;
         }
-
+#endif
+        public AddTaskQueryParams AttachFile(string name, byte[] content)
+        {
+            Attaches.Add(new Attachment(name, content));
+            return this;
+        }
 
         /// <summary>
         /// 

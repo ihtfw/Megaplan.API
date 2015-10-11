@@ -263,34 +263,34 @@
 
         public async Task<T> MakeGetRequest<T>(string baseQuery, string jsonKey, object queryParams = null)
         {
-            var response = await GetRequest(baseQuery + new QueryBuider(queryParams).Build(), true);
+            using(var response = await GetRequest(baseQuery + new QueryBuider(queryParams).Build(), true))
+            {
+                var content = response.Content();
 
-            var content = response.Content();
-
-            var jData = ParseResponse(content);
-            var data = jData[jsonKey].ToString();
-            var tasks = JsonConvert.DeserializeObject<T>(data);
-            response.Close();
-            return tasks;
+                var jData = ParseResponse(content);
+                var data = jData[jsonKey].ToString();
+                var tasks = JsonConvert.DeserializeObject<T>(data);
+                return tasks;
+            }
         }
 
         public async Task<T> MakePostRequest<T>(string baseQuery, string jsonKey, object queryParams = null)
         {
-            var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true);
+            using (var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true))
+            {
+                var content = response.Content();
 
-            var content = response.Content();
-
-            var jData = ParseResponse(content);
-            var data = jData[jsonKey].ToString();
-            var tasks = JsonConvert.DeserializeObject<T>(data);
-            response.Close();
-            return tasks;
+                var jData = ParseResponse(content);
+                var data = jData[jsonKey].ToString();
+                var tasks = JsonConvert.DeserializeObject<T>(data);
+                return tasks;
+            }
         }
 
         public async Task MakePostRequest(string baseQuery, object queryParams = null)
         {
             var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true);
-            response.Close();
+            response.Dispose();
         }
 
         [DebuggerStepThrough]
@@ -312,42 +312,48 @@
             return await request.GetResponse();
         }
 
-        public async Task Download(string url, string path, CancellationToken ct, IProgress<DownloadProgressArgs> progress)
+#if !PCL
+        public Task Download(string url, string path, CancellationToken ct, IProgress<DownloadProgressArgs> progress)
         {
-            var bufferSize = 2048;
-            var bufferBytes = new byte[bufferSize];
             try
             {
-                var respone = await GetRequest(url, true);
-                var totalSize = long.Parse(respone.Headers["Content-Length"]);
-                using (var responseStream = respone.GetResponseStream())
+                using (var filestream = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    using (var filestream = new FileStream(path, FileMode.OpenOrCreate))
-                    {
-                        while (true)
-                        {
-                            ct.ThrowIfCancellationRequested();
-                            var readSize = await responseStream.ReadAsync(bufferBytes, 0, bufferBytes.Length, ct);
-                            if (readSize == 0)
-                            {
-                                break;
-                            }
-                            // Cancle download file 
-                            await filestream.WriteAsync(bufferBytes, 0, readSize, ct);
-                            var args = new DownloadProgressArgs(filestream.Position, totalSize);
-                            progress.Report(args);
-                        }
-                    }
+                    return Download(url, filestream, ct, progress);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 File.Delete(path);
                 throw;
             }
         }
-   
+#endif
 
+        public async Task Download(string url, Stream streamToWrite, CancellationToken ct, IProgress<DownloadProgressArgs> progress)
+        {
+            var bufferSize = 2048;
+            var bufferBytes = new byte[bufferSize];
+
+            var respone = await GetRequest(url, true);
+            var totalSize = long.Parse(respone.Headers["Content-Length"]);
+            using (var responseStream = respone.GetResponseStream())
+            {
+                while (true)
+                {
+                    ct.ThrowIfCancellationRequested();
+                    var readSize = await responseStream.ReadAsync(bufferBytes, 0, bufferBytes.Length, ct);
+                    if (readSize == 0)
+                    {
+                        break;
+                    }
+                    // Cancle download file 
+                    await streamToWrite.WriteAsync(bufferBytes, 0, readSize, ct);
+                    var args = new DownloadProgressArgs(streamToWrite.Position, totalSize);
+                    progress.Report(args);
+                }
+            }
+        }
 
         [DebuggerStepThrough]
         public Task<HttpWebResponse> GetRequest(string subUrl, bool signRequest)
@@ -373,6 +379,6 @@
             return CreateRequest("PUT", subUrl, null, signRequest);
         }
 
-        #endregion
+#endregion
     }
 }

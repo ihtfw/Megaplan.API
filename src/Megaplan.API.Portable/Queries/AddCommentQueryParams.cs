@@ -46,11 +46,18 @@ namespace Megaplan.API.Queries
 
         [Array("Model[Attaches][%]")]
         public List<Attachment> Attaches { get; set; }
-
-
+        
+#if !PCL
         public AddCommentQueryParams AttachFile(string path)
         {
             Attaches.Add(new Attachment(path));
+            return this;
+        }
+#endif
+
+        public AddCommentQueryParams AttachFile(string name, byte[] content)
+        {
+            Attaches.Add(new Attachment(name, content));
             return this;
         }
 

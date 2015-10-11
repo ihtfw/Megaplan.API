@@ -61,7 +61,8 @@ namespace Megaplan.API
             {
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.SetRawHeader("ContentLenght", postData.Length.ToString());
-                using (var stream = await request.GetRequestStreamAsync())
+
+                using (var stream = await Task.Factory.FromAsync(request.BeginGetRequestStream, asyncResult => request.EndGetRequestStream(asyncResult), request))
                 {
                     stream.Write(postData, 0, postData.Length);
                 }
