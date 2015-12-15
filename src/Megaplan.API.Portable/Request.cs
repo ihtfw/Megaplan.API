@@ -52,17 +52,29 @@ namespace Megaplan.API
             request.Headers["X-Authorization"] = accessId + ":" + hash;
         }
 
+        /// <summary>
+        /// In milliseconds. Not supported in PCL yet.
+        /// </summary>
+        public int? Timeout { get; set; }
+
         private async Task Create()
         {
             request = (HttpWebRequest) WebRequest.Create(endPoint);
-
+#if !PCL
+            if (Timeout.HasValue)
+            {
+                request.Timeout = Timeout.Value;
+                request.ContinueTimeout = Timeout.Value;
+                request.ReadWriteTimeout = Timeout.Value;
+            }
+#endif
             request.Method = requestMethod;
             if (postData != null)
             {
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.SetRawHeader("ContentLenght", postData.Length.ToString());
-
-                using (var stream = await Task.Factory.FromAsync(request.BeginGetRequestStream, asyncResult => request.EndGetRequestStream(asyncResult), request))
+                
+                using (var stream = await Task.Factory.FromAsync(request.BeginGetRequestStream, asyncResult => request.EndGetRequestStream(asyncResult), request).ConfigureAwait(false))
                 {
                     stream.Write(postData, 0, postData.Length);
                 }
@@ -86,8 +98,8 @@ namespace Megaplan.API
 
         public async Task<HttpWebResponse> GetResponse()
         {
-            await Create();
-            return (HttpWebResponse)(await Task.Factory.FromAsync(request.BeginGetResponse, asyncResult => request.EndGetResponse(asyncResult), request));
+            await Create().ConfigureAwait(false);
+            return (HttpWebResponse)(await Task.Factory.FromAsync(request.BeginGetResponse, asyncResult => request.EndGetResponse(asyncResult), request).ConfigureAwait(false));
         }
     }
 }

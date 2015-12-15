@@ -52,6 +52,10 @@
     <MakeDir Directories="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(SolutionDir)Megaplan.API\bin\$(ConfigurationName)\Megaplan.API.dll" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\net45" />
     <Copy SourceFiles="$(SolutionDir)Megaplan.API\bin\$(ConfigurationName)\Megaplan.API.XML" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\net45" />
+    <Copy SourceFiles="$(SolutionDir)Megaplan.API\bin\$(ConfigurationName)\Megaplan.API.pdb" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\net45" />
+    <Copy SourceFiles="$(SolutionDir)Megaplan.API.Portable\bin\$(ConfigurationName)\Megaplan.API.dll" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net45+wp80+win8+wpa81+aspnetcore50" />
+    <Copy SourceFiles="$(SolutionDir)Megaplan.API.Portable\bin\$(ConfigurationName)\Megaplan.API.XML" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net45+wp80+win8+wpa81+aspnetcore50" />
+    <Copy SourceFiles="$(SolutionDir)Megaplan.API.Portable\bin\$(ConfigurationName)\Megaplan.API.pdb" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net45+wp80+win8+wpa81+aspnetcore50" />
     <Copy SourceFiles="$(SolutionDir)NuGet\nMegaplan.API.nuspec" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <PepitaPackage.CreatePackageTask NuGetBuildDirectory="$(SolutionDir)NuGetBuild" MetadataAssembly="$(SolutionDir)Megaplan.API\bin\$(ConfigurationName)\Megaplan.API.dll" />
   </Target>

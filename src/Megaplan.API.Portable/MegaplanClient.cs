@@ -32,6 +32,8 @@
         {
             this.host = host;
         }
+        
+        public int? Timeout { get; set; }
 
         public bool IsAuthorized { get; private set; }
 
@@ -70,7 +72,7 @@
 
         public async Task<DateTime> ServerTime()
         {
-            var response = await GetRequest("/BumsCommonApiV01/System/datetime.api", false);
+            var response = await GetRequest("/BumsCommonApiV01/System/datetime.api", false).ConfigureAwait(false);
 
             var content = response.Content();
 
@@ -90,7 +92,7 @@
                     await
                         PostRequest(
                             string.Format("/BumsCommonApiV01/User/authorize.api?Login={0}&Password={1}", login, passHash),
-                            false);
+                            false).ConfigureAwait(false);
             }
             catch (WebException e)
             {
@@ -188,7 +190,7 @@
 
         public async Task<List<Comment>> UnreadComments(AllCommentsQueryParams queryParams)
         {
-            return (await Comments(queryParams)).Where(c => c.IsUnread).ToList();
+            return (await Comments(queryParams).ConfigureAwait(false)).Where(c => c.IsUnread).ToList();
         }
 
         /// <summary>
@@ -263,7 +265,7 @@
 
         public async Task<T> MakeGetRequest<T>(string baseQuery, string jsonKey, object queryParams = null)
         {
-            using(var response = await GetRequest(baseQuery + new QueryBuider(queryParams).Build(), true))
+            using(var response = await GetRequest(baseQuery + new QueryBuider(queryParams).Build(), true).ConfigureAwait(false))
             {
                 var content = response.Content();
 
@@ -276,7 +278,7 @@
 
         public async Task<T> MakePostRequest<T>(string baseQuery, string jsonKey, object queryParams = null)
         {
-            using (var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true))
+            using (var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true).ConfigureAwait(false))
             {
                 var content = response.Content();
 
@@ -289,7 +291,7 @@
 
         public async Task MakePostRequest(string baseQuery, object queryParams = null)
         {
-            var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true);
+            var response = await PostRequest(baseQuery, new QueryBuider(queryParams).BuildPostData(), true).ConfigureAwait(false);
             response.Dispose();
         }
 
@@ -309,7 +311,9 @@
                 request = new Request(method, host, subUrl, postData);
             }
 
-            return await request.GetResponse();
+            request.Timeout = Timeout;
+
+            return await request.GetResponse().ConfigureAwait(false);
         }
 
 #if !PCL
@@ -335,20 +339,20 @@
             var bufferSize = 2048;
             var bufferBytes = new byte[bufferSize];
 
-            var respone = await GetRequest(url, true);
+            var respone = await GetRequest(url, true).ConfigureAwait(false);
             var totalSize = long.Parse(respone.Headers["Content-Length"]);
             using (var responseStream = respone.GetResponseStream())
             {
                 while (true)
                 {
                     ct.ThrowIfCancellationRequested();
-                    var readSize = await responseStream.ReadAsync(bufferBytes, 0, bufferBytes.Length, ct);
+                    var readSize = await responseStream.ReadAsync(bufferBytes, 0, bufferBytes.Length, ct).ConfigureAwait(false);
                     if (readSize == 0)
                     {
                         break;
                     }
                     // Cancle download file 
-                    await streamToWrite.WriteAsync(bufferBytes, 0, readSize, ct);
+                    await streamToWrite.WriteAsync(bufferBytes, 0, readSize, ct).ConfigureAwait(false);
                     var args = new DownloadProgressArgs(streamToWrite.Position, totalSize);
                     progress.Report(args);
                 }
