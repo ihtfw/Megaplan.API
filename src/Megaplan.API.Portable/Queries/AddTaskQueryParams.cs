@@ -57,13 +57,13 @@ namespace Megaplan.API.Queries
         /// Обязательное поле для массовой задачи
         /// </summary>
         [JsonProperty("Model[Executors]")]
-        public int[] Executors { get; set; }
+        public List<int> Executors { get; set; }
 
         /// <summary>
         /// Коды аудиторов
         /// </summary>
         [JsonProperty("Model[Auditors]")]
-        public int[] Auditors { get; set; }
+        public List<int> Auditors { get; set; }
 
         /// <summary>
         /// Код важности

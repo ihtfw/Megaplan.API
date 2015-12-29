@@ -36,7 +36,7 @@ namespace Megaplan.API.Models
         /// <summary>
         /// Список плательщиков
         /// </summary>
-        public Client[] Payers { get; set; }
+        public List<Client> Payers { get; set; }
 
         /// <summary>
         /// Тип клиента
@@ -56,7 +56,7 @@ namespace Megaplan.API.Models
         /// <summary>
         /// Ответственные
         /// </summary>
-        public Client[] Responsibles { get; set; }
+        public List<Client> Responsibles { get; set; }
 
         /// <summary>
         /// Сайт

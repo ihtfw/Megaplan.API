@@ -248,7 +248,9 @@ namespace Megaplan.API.Tests
 
             var cl = (await client.Clients(ClientsQueryParams.WithFilter(settings.ExistingClientName))).Single();
             var employee = (await client.Employees(EmployeesQueryParams.FilterByName(settings.ExistingEmployeeName))).Single();
-            var task = await client.AddTask(AddTaskQueryParams.FromCustomer("API Тестовое название", " API тестовоя суть задачи", employee.Id, cl.Id));
+            var @params = AddTaskQueryParams.FromCustomer("API Тестовое название", " API тестовоя суть задачи", employee.Id, cl.Id);
+            @params.Auditors = new List<int>(employee.Id);
+            var task = await client.AddTask(@params);
 
             Assert.That(task, Is.Not.Null);
         }

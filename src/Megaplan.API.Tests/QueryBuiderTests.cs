@@ -1,5 +1,7 @@
 ﻿namespace Megaplan.API.Tests
 {
+    using System.Collections.Generic;
+
     using Megaplan.API.Enums;
     using Megaplan.API.Queries;
 
@@ -104,6 +106,23 @@
 
             var actual = sut.Build();
             Assert.AreEqual("?Model[Name]=name&Model[Responsible]=1&Model[IsGroup]=0&Model[Statement]=statement&Model[Attaches][Add][0][Name]=file1&Model[Attaches][Add][0][Content]=content1&Model[Attaches][Add][1][Name]=file2&Model[Attaches][Add][1][Content]=content2", actual);
+        }
+
+
+        [Test]
+        public void IntArrayTest()
+        {
+            var addTaskQueryParams = AddTaskQueryParams.Simple("Name", "Statement", 1);
+            addTaskQueryParams.Auditors = new List<int>
+                                          {
+                                              1, 2, 3
+                                          };
+
+            var sut = new QueryBuider(addTaskQueryParams);
+
+            var actual = sut.Build();
+            
+            Assert.AreEqual("?Model[Name]=Name&Model[Responsible]=1&Model[Auditors]=1%2C2%2C3&Model[IsGroup]=0&Model[Statement]=Statement", actual);
         }
 
     }

@@ -3,6 +3,8 @@ using Megaplan.API.Enums;
 
 namespace Megaplan.API.Models
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// https://help.megaplan.ru/API_employee_card
     /// </summary>
@@ -61,7 +63,7 @@ namespace Megaplan.API.Models
         /// <summary>
         /// Телефоны
         /// </summary>
-        public Phone[] Phones { get; set; }
+        public List<Phone> Phones { get; set; }
 
         /// <summary>
         /// Электропочта
@@ -109,17 +111,17 @@ namespace Megaplan.API.Models
         /// <summary>
         /// Начальники
         /// </summary>
-        public Employee[] ChiefsWithoutMe { get; set; }
+        public List<Employee> ChiefsWithoutMe { get; set; }
 
         /// <summary>
         /// Подчиненные
         /// </summary>
-        public Employee[] SubordinatesWithoutMe { get; set; }
+        public List<Employee> SubordinatesWithoutMe { get; set; }
 
         /// <summary>
         /// Координаторы
         /// </summary>
-        public Employee[] Coordinators { get; set; }
+        public List<Employee> Coordinators { get; set; }
 
         /// <summary>
         /// Статус

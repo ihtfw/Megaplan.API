@@ -19,7 +19,7 @@ namespace Megaplan.API.Queries
         /// Тип комментируемого объекта
         /// </summary>
         public SubjectType SubjectType { get; set; }
-        
+
         /// <summary>
         /// ID комментируемого объекта
         /// </summary>
@@ -43,10 +43,9 @@ namespace Megaplan.API.Queries
         [JsonProperty("Model[WorkDate]")]
         public DateTime? WorkDate { get; set; }
 
-
         [Array("Model[Attaches][%]")]
         public List<Attachment> Attaches { get; set; }
-        
+
 #if !PCL
         public AddCommentQueryParams AttachFile(string path)
         {
