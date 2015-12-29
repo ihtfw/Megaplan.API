@@ -327,6 +327,16 @@ namespace Megaplan.API.Tests
         }
 
         [Test]
+        public async void ClientCardTest()
+        {
+            await Authorize();
+            var clients = await client.Clients(ClientsQueryParams.WithFilter(settings.ExistingClientName));
+            var clientCard = await client.ClientCard(clients.First().Id);
+
+            Assert.That(clientCard, Is.Not.Null);
+        }
+
+        [Test]
         public async void ClientsFilterTest()
         {
             await Authorize();

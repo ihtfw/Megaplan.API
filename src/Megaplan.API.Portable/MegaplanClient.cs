@@ -58,6 +58,20 @@
         #region Clients
 
         /// <summary>
+        ///     Карточка клиента
+        ///    https://help.megaplan.ru/API_contractor_card
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Task<Client> ClientCard(int id)
+        {
+            return MakeGetRequest<Client>("/BumsCrmApiV01/Contractor/card.api", "contractor", new
+            {
+                Id = id
+            });
+        }
+
+        /// <summary>
         ///     Список клиентов
         ///     https://help.megaplan.ru/API_contractor_list
         /// </summary>
