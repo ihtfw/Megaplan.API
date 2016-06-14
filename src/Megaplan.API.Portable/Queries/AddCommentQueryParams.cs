@@ -1,4 +1,4 @@
-namespace Megaplan.API.Queries
+п»їnamespace Megaplan.API.Queries
 {
     using System;
     using System.Collections.Generic;
@@ -16,29 +16,29 @@ namespace Megaplan.API.Queries
         }
 
         /// <summary>
-        /// Тип комментируемого объекта
+        /// РўРёРї РєРѕРјРјРµРЅС‚РёСЂСѓРµРјРѕРіРѕ РѕР±СЉРµРєС‚Р°
         /// </summary>
         public SubjectType SubjectType { get; set; }
 
         /// <summary>
-        /// ID комментируемого объекта
+        /// ID РєРѕРјРјРµРЅС‚РёСЂСѓРµРјРѕРіРѕ РѕР±СЉРµРєС‚Р°
         /// </summary>
         public int SubjectId { get; set; }
 
         /// <summary>
-        /// Текст комментария
+        /// РўРµРєСЃС‚ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ
         /// </summary>
         [JsonProperty("Model[Text]")]
         public string Text { get; set; }
 
         /// <summary>
-        /// Кол-во потраченных часов, которое приплюсуется к комментируемому объекту (задача или проект)
+        /// РљРѕР»-РІРѕ РїРѕС‚СЂР°С‡РµРЅРЅС‹С… С‡Р°СЃРѕРІ, РєРѕС‚РѕСЂРѕРµ РїСЂРёРїР»СЋСЃСѓРµС‚СЃСЏ Рє РєРѕРјРјРµРЅС‚РёСЂСѓРµРјРѕРјСѓ РѕР±СЉРµРєС‚Сѓ (Р·Р°РґР°С‡Р° РёР»Рё РїСЂРѕРµРєС‚)
         /// </summary>
         [JsonProperty("Model[Work]")]
         public int? Work { get; set; }
 
         /// <summary>
-        /// Дата, на которую списаны потраченные часы
+        /// Р”Р°С‚Р°, РЅР° РєРѕС‚РѕСЂСѓСЋ СЃРїРёСЃР°РЅС‹ РїРѕС‚СЂР°С‡РµРЅРЅС‹Рµ С‡Р°СЃС‹
         /// </summary>
         [JsonProperty("Model[WorkDate]")]
         public DateTime? WorkDate { get; set; }

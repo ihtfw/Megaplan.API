@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.ComponentModel;
 using Megaplan.API.Attributes;
 using Megaplan.API.Enums;
@@ -10,7 +10,7 @@ namespace Megaplan.API.Queries
     using System.Collections.Generic;
 
     /// <summary>
-    /// Параметры для запроса на создание задачи
+    /// РџР°СЂР°РјРµС‚СЂС‹ РґР»СЏ Р·Р°РїСЂРѕСЃР° РЅР° СЃРѕР·РґР°РЅРёРµ Р·Р°РґР°С‡Рё
     /// https://help.megaplan.ru/API_task_create
     /// </summary>
     public class AddTaskQueryParams
@@ -21,78 +21,78 @@ namespace Megaplan.API.Queries
         }
 
         /// <summary>
-        /// Название
-        /// Обязательное поле
+        /// РќР°Р·РІР°РЅРёРµ
+        /// РћР±СЏР·Р°С‚РµР»СЊРЅРѕРµ РїРѕР»Рµ
         /// </summary>
         [JsonProperty("Model[Name]")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Дедлайн (дата со временем)
+        /// Р”РµРґР»Р°Р№РЅ (РґР°С‚Р° СЃРѕ РІСЂРµРјРµРЅРµРј)
         /// </summary>
         [JsonProperty("Model[Deadline]")]
         public DateTime? Deadline { get; set; }
 
         /// <summary>
-        /// Дедлайн (только дата)
+        /// Р”РµРґР»Р°Р№РЅ (С‚РѕР»СЊРєРѕ РґР°С‚Р°)
         /// </summary>
         [JsonProperty("Model[DeadlineDate]")]
         public DateTime? DeadlineDate { get; set; }
 
         /// <summary>
-        /// Тип дедлайна
+        /// РўРёРї РґРµРґР»Р°Р№РЅР°
         /// </summary>
         [JsonProperty("Model[DeadlineDate]")]
         public DeadlineType? DeadlineType { get; set; }
 
         /// <summary>
-        /// Код ответственного (EmployeeId)
-        /// Обязательное поле для не массовой задачи
+        /// РљРѕРґ РѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕРіРѕ (EmployeeId)
+        /// РћР±СЏР·Р°С‚РµР»СЊРЅРѕРµ РїРѕР»Рµ РґР»СЏ РЅРµ РјР°СЃСЃРѕРІРѕР№ Р·Р°РґР°С‡Рё
         /// </summary>
         [JsonProperty("Model[Responsible]")]
         public int Responsible { get; set; }
 
         /// <summary>
-        /// Коды соисполнителей
-        /// Обязательное поле для массовой задачи
+        /// РљРѕРґС‹ СЃРѕРёСЃРїРѕР»РЅРёС‚РµР»РµР№
+        /// РћР±СЏР·Р°С‚РµР»СЊРЅРѕРµ РїРѕР»Рµ РґР»СЏ РјР°СЃСЃРѕРІРѕР№ Р·Р°РґР°С‡Рё
         /// </summary>
         [JsonProperty("Model[Executors]")]
         public List<int> Executors { get; set; }
 
         /// <summary>
-        /// Коды аудиторов
+        /// РљРѕРґС‹ Р°СѓРґРёС‚РѕСЂРѕРІ
         /// </summary>
         [JsonProperty("Model[Auditors]")]
         public List<int> Auditors { get; set; }
 
         /// <summary>
-        /// Код важности
-        /// С версии 2011.3 допустимо отсутствие параметра важности или важность с MasterType=high
+        /// РљРѕРґ РІР°Р¶РЅРѕСЃС‚Рё
+        /// РЎ РІРµСЂСЃРёРё 2011.3 РґРѕРїСѓСЃС‚РёРјРѕ РѕС‚СЃСѓС‚СЃС‚РІРёРµ РїР°СЂР°РјРµС‚СЂР° РІР°Р¶РЅРѕСЃС‚Рё РёР»Рё РІР°Р¶РЅРѕСЃС‚СЊ СЃ MasterType=high
         /// </summary>
         [JsonProperty("Model[Severity]")]
         public int? Severity { get; set; }
 
         /// <summary>
-        /// Код надзадачи (если число) или код проекта (если строка в формате 'pКод_проекта')
+        /// РљРѕРґ РЅР°РґР·Р°РґР°С‡Рё (РµСЃР»Рё С‡РёСЃР»Рѕ) РёР»Рё РєРѕРґ РїСЂРѕРµРєС‚Р° (РµСЃР»Рё СЃС‚СЂРѕРєР° РІ С„РѕСЂРјР°С‚Рµ 'pРљРѕРґ_РїСЂРѕРµРєС‚Р°')
         /// </summary>
         [JsonProperty("Model[SuperTask]")]
         public string SuperTask { get; set; }
 
         /// <summary>
-        /// Код заказчика
+        /// РљРѕРґ Р·Р°РєР°Р·С‡РёРєР°
         /// </summary>
         [JsonProperty("Model[Customer]")]
         public int? Customer { get; set; }
 
         /// <summary>
-        /// Массовая задача (каждому соисполнителю будет создана своя задача)
+        /// РњР°СЃСЃРѕРІР°СЏ Р·Р°РґР°С‡Р° (РєР°Р¶РґРѕРјСѓ СЃРѕРёСЃРїРѕР»РЅРёС‚РµР»СЋ Р±СѓРґРµС‚ СЃРѕР·РґР°РЅР° СЃРІРѕСЏ Р·Р°РґР°С‡Р°)
         /// </summary>
         [BuildBoolAsInt]
         [JsonProperty("Model[IsGroup]")]
         public bool IsGroup { get; set; }
 
         /// <summary>
-        /// Суть задачи
+        /// РЎСѓС‚СЊ Р·Р°РґР°С‡Рё
         /// </summary>
         [JsonProperty("Model[Statement]")]
         public string Statement { get; set; }
@@ -102,34 +102,34 @@ namespace Megaplan.API.Queries
 
 
             /*
-         * Model[Attaches][Add]	array	Массив приложенных файлов	Должен передаваться POST-запросом
-         * Model[Attaches][Add][0...n][Content]	string	Данные (контент) файла, закодированные с использованием MIME base64	В устаревших версиях Мегаплана может действовать имя параметра Model[Attaches][Add][][Context]
-         * Model[Attaches][Add][0...n][Name]	string	Имя файла	Будет фигурировать при выводе задачи
+         * Model[Attaches][Add]	array	РњР°СЃСЃРёРІ РїСЂРёР»РѕР¶РµРЅРЅС‹С… С„Р°Р№Р»РѕРІ	Р”РѕР»Р¶РµРЅ РїРµСЂРµРґР°РІР°С‚СЊСЃСЏ POST-Р·Р°РїСЂРѕСЃРѕРј
+         * Model[Attaches][Add][0...n][Content]	string	Р”Р°РЅРЅС‹Рµ (РєРѕРЅС‚РµРЅС‚) С„Р°Р№Р»Р°, Р·Р°РєРѕРґРёСЂРѕРІР°РЅРЅС‹Рµ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј MIME base64	Р’ СѓСЃС‚Р°СЂРµРІС€РёС… РІРµСЂСЃРёСЏС… РњРµРіР°РїР»Р°РЅР° РјРѕР¶РµС‚ РґРµР№СЃС‚РІРѕРІР°С‚СЊ РёРјСЏ РїР°СЂР°РјРµС‚СЂР° Model[Attaches][Add][][Context]
+         * Model[Attaches][Add][0...n][Name]	string	РРјСЏ С„Р°Р№Р»Р°	Р‘СѓРґРµС‚ С„РёРіСѓСЂРёСЂРѕРІР°С‚СЊ РїСЂРё РІС‹РІРѕРґРµ Р·Р°РґР°С‡Рё
          */
 
         /// <summary>
-        /// Планирование: старт
-        /// Дата со временем
+        /// РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ: СЃС‚Р°СЂС‚
+        /// Р”Р°С‚Р° СЃРѕ РІСЂРµРјРµРЅРµРј
         /// </summary>
         [JsonProperty("Model[Start]")]
         public DateTime? Start { get; set; }
 
         /// <summary>
-        /// Планирование: финиш
-        /// Только дата. При указанном Model[PlannedTime] расчитывается автоматически
+        /// РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ: С„РёРЅРёС€
+        /// РўРѕР»СЊРєРѕ РґР°С‚Р°. РџСЂРё СѓРєР°Р·Р°РЅРЅРѕРј Model[PlannedTime] СЂР°СЃС‡РёС‚С‹РІР°РµС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё
         /// </summary>
         [JsonProperty("Model[PlannedFinish]")]
         public DateTime? PlannedFinish { get; set; }
 
         /// <summary>
-        /// Планирование: длительность (в днях)
-        /// При указанном Model[PlannedFinish] расчитывается автоматически
+        /// РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ: РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ (РІ РґРЅСЏС…)
+        /// РџСЂРё СѓРєР°Р·Р°РЅРЅРѕРј Model[PlannedFinish] СЂР°СЃС‡РёС‚С‹РІР°РµС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё
         /// </summary>
         [JsonProperty("Model[PlannedTime]")]
         public int? PlannedTime { get; set; }
 
         /// <summary>
-        /// Планирование: плановые трудозатраты (в минутах)
+        /// РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ: РїР»Р°РЅРѕРІС‹Рµ С‚СЂСѓРґРѕР·Р°С‚СЂР°С‚С‹ (РІ РјРёРЅСѓС‚Р°С…)
         /// </summary>
         [JsonProperty("Model[PlannedWork]")]
         public int? PlannedWork { get; set; }
@@ -137,9 +137,9 @@ namespace Megaplan.API.Queries
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name">Название</param>
-        /// <param name="statement">Суть задачи</param>
-        /// <param name="responsibleId">Id ответсвенного</param>
+        /// <param name="name">РќР°Р·РІР°РЅРёРµ</param>
+        /// <param name="statement">РЎСѓС‚СЊ Р·Р°РґР°С‡Рё</param>
+        /// <param name="responsibleId">Id РѕС‚РІРµС‚СЃРІРµРЅРЅРѕРіРѕ</param>
         /// <returns></returns>
         public static AddTaskQueryParams Simple(string name, string statement, int responsibleId)
         {
@@ -167,10 +167,10 @@ namespace Megaplan.API.Queries
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name">Название</param>
-        /// <param name="statement">Суть задачи</param>
-        /// <param name="responsibleId">Id ответсвенного</param>
-        /// <param name="customerId">Id клиента</param>
+        /// <param name="name">РќР°Р·РІР°РЅРёРµ</param>
+        /// <param name="statement">РЎСѓС‚СЊ Р·Р°РґР°С‡Рё</param>
+        /// <param name="responsibleId">Id РѕС‚РІРµС‚СЃРІРµРЅРЅРѕРіРѕ</param>
+        /// <param name="customerId">Id РєР»РёРµРЅС‚Р°</param>
         /// <returns></returns>
         public static AddTaskQueryParams FromCustomer(string name, string statement, int responsibleId, int customerId)
         {
@@ -182,9 +182,9 @@ namespace Megaplan.API.Queries
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name">Название</param>
-        /// <param name="statement">Суть задачи</param>
-        /// <param name="responsible">Ответсвенный</param>
+        /// <param name="name">РќР°Р·РІР°РЅРёРµ</param>
+        /// <param name="statement">РЎСѓС‚СЊ Р·Р°РґР°С‡Рё</param>
+        /// <param name="responsible">РћС‚РІРµС‚СЃРІРµРЅРЅС‹Р№</param>
         /// <returns></returns>
         public static AddTaskQueryParams Simple(string name, string statement, Employee responsible)
         {

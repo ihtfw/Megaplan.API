@@ -1,4 +1,4 @@
-using Megaplan.API.Attributes;
+п»їusing Megaplan.API.Attributes;
 using Megaplan.API.Enums;
 
 namespace Megaplan.API.Queries
@@ -6,19 +6,19 @@ namespace Megaplan.API.Queries
     public class EmployeesQueryParams
     {
         /// <summary>
-        /// Идентификатор отдела
-        /// Если передать значение -1, то будут возвращены сотрудники, не привязанные ни к какому отделу.
-        /// Если отдела с указанным Id не существует, то будет возвращена ошибка "Department not found"
+        /// РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕС‚РґРµР»Р°
+        /// Р•СЃР»Рё РїРµСЂРµРґР°С‚СЊ Р·РЅР°С‡РµРЅРёРµ -1, С‚Рѕ Р±СѓРґСѓС‚ РІРѕР·РІСЂР°С‰РµРЅС‹ СЃРѕС‚СЂСѓРґРЅРёРєРё, РЅРµ РїСЂРёРІСЏР·Р°РЅРЅС‹Рµ РЅРё Рє РєР°РєРѕРјСѓ РѕС‚РґРµР»Сѓ.
+        /// Р•СЃР»Рё РѕС‚РґРµР»Р° СЃ СѓРєР°Р·Р°РЅРЅС‹Рј Id РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, С‚Рѕ Р±СѓРґРµС‚ РІРѕР·РІСЂР°С‰РµРЅР° РѕС€РёР±РєР° "Department not found"
         /// </summary>
         public int? Department { get; set; }
 
         /// <summary>
-        /// Параметр для сортировки
+        /// РџР°СЂР°РјРµС‚СЂ РґР»СЏ СЃРѕСЂС‚РёСЂРѕРІРєРё
         /// </summary>
         public EmployeeOrderByType? OrderBy { get; set; }
 
         /// <summary>
-        /// Фильтрация по части имени сотрудника
+        /// Р¤РёР»СЊС‚СЂР°С†РёСЏ РїРѕ С‡Р°СЃС‚Рё РёРјРµРЅРё СЃРѕС‚СЂСѓРґРЅРёРєР°
         /// </summary>
         [BuildWithoutToLower]
         public string Name { get; set; }

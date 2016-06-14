@@ -4,11 +4,13 @@ using Megaplan.API.Attributes;
 
 namespace Megaplan.API
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Reflection;
+    using System.Runtime.Serialization;
     using System.Text;
 
     using Newtonsoft.Json;
@@ -109,6 +111,22 @@ namespace Megaplan.API
             if (propertyValue == null)
             {
                 return null;
+            }
+
+            var type = propertyInfo.PropertyType;
+            if (type.GetTypeInfo().IsEnum)
+            {
+                var name = Enum.GetName(type, propertyValue);
+#if PCL
+                var enumMemberAttribute = ((EnumMemberAttribute[])type.GetRuntimeField(name).GetCustomAttributes(typeof(EnumMemberAttribute), true)).SingleOrDefault();
+#else
+                var enumMemberAttribute = ((EnumMemberAttribute[])type.GetField(name).GetCustomAttributes(typeof(EnumMemberAttribute), true)).SingleOrDefault();
+#endif
+
+                if (enumMemberAttribute != null)
+                {
+                    return enumMemberAttribute.Value;
+                }
             }
 
             if (propertyInfo.GetCustomAttribute<BuildBoolAsIntAttribute>() != null)

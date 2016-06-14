@@ -1,4 +1,4 @@
-namespace Megaplan.API.Enums
+п»їnamespace Megaplan.API.Enums
 {
     using Newtonsoft.Json;
 
@@ -7,57 +7,57 @@ namespace Megaplan.API.Enums
         Any,
 
         /// <summary>
-        /// актуальные
+        /// Р°РєС‚СѓР°Р»СЊРЅС‹Рµ
         /// </summary>
         Actual,
 
         /// <summary>
-        /// в процессе
+        /// РІ РїСЂРѕС†РµСЃСЃРµ
         /// </summary>
         Inprocess,
 
         /// <summary>
-        /// новые
+        /// РЅРѕРІС‹Рµ
         /// </summary>
         New,
 
         /// <summary>
-        /// просроченные
+        /// РїСЂРѕСЃСЂРѕС‡РµРЅРЅС‹Рµ
         /// </summary>
         Overdue,
 
         /// <summary>
-        /// условно завершенные
+        /// СѓСЃР»РѕРІРЅРѕ Р·Р°РІРµСЂС€РµРЅРЅС‹Рµ
         /// </summary>
         Done,
 
         /// <summary>
-        /// отложенные
+        /// РѕС‚Р»РѕР¶РµРЅРЅС‹Рµ
         /// </summary>
         Delayed,
 
         /// <summary>
-        /// завершенные
+        /// Р·Р°РІРµСЂС€РµРЅРЅС‹Рµ
         /// </summary>
         Completed,
 
         /// <summary>
-        /// проваленные
+        /// РїСЂРѕРІР°Р»РµРЅРЅС‹Рµ
         /// </summary>
         Failed,
 
         /// <summary>
-        /// Отмененная
+        /// РћС‚РјРµРЅРµРЅРЅР°СЏ
         /// </summary>
         Cancelled,
 
         /// <summary>
-        /// Принята
+        /// РџСЂРёРЅСЏС‚Р°
         /// </summary>
         Accepted,
 
         /// <summary>
-        /// Просрочена
+        /// РџСЂРѕСЃСЂРѕС‡РµРЅР°
         /// </summary>
         Expired,
 

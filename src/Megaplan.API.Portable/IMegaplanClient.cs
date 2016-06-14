@@ -104,6 +104,14 @@ namespace Megaplan.API
         /// <returns></returns>
         Task<Employee> EmployeeCard(int id);
 
-        System.Threading.Tasks.Task TaskAction(int taskId, ActionEnum action);
+        System.Threading.Tasks.Task TaskAction(int taskId, TaskActionType action);
+
+        /// <summary>
+        /// Допустимые действия над задачей
+        /// https://help.megaplan.ru/API_task_available_actions
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
+        Task<List<TaskActionType>> AvailibleTaskActions(int taskId);
     }
 }

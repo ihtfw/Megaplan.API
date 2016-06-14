@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+п»їusing Newtonsoft.Json;
 
 namespace Megaplan.API.Queries
 {
@@ -8,28 +8,28 @@ namespace Megaplan.API.Queries
     public class ClientsQueryParams
     {
         /// <summary>
-        /// Идентификатор фильтра
+        /// РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С„РёР»СЊС‚СЂР°
         /// </summary>
         public int? FilterId { get; set; }
 
         /// <summary>
-        /// Сколько выбрать клиентов (LIMIT) Выборка происходит с начала от меньших ID к большим
+        /// РЎРєРѕР»СЊРєРѕ РІС‹Р±СЂР°С‚СЊ РєР»РёРµРЅС‚РѕРІ (LIMIT) Р’С‹Р±РѕСЂРєР° РїСЂРѕРёСЃС…РѕРґРёС‚ СЃ РЅР°С‡Р°Р»Р° РѕС‚ РјРµРЅСЊС€РёС… ID Рє Р±РѕР»СЊС€РёРј
         /// </summary>
         public int? Limit { get; set; }
 
         /// <summary>
-        /// Начиная с какого выбирать клиента (OFFSET)
+        /// РќР°С‡РёРЅР°СЏ СЃ РєР°РєРѕРіРѕ РІС‹Р±РёСЂР°С‚СЊ РєР»РёРµРЅС‚Р° (OFFSET)
         /// </summary>
         public int? Offset { get; set; }
 
         /// <summary>
-        /// Условие поиска
+        /// РЈСЃР»РѕРІРёРµ РїРѕРёСЃРєР°
         /// </summary>
         [JsonProperty("qs")]
         public string Filter { get; set; }
 
         /// <summary>
-        /// Номер телефона в произвольном формате
+        /// РќРѕРјРµСЂ С‚РµР»РµС„РѕРЅР° РІ РїСЂРѕРёР·РІРѕР»СЊРЅРѕРј С„РѕСЂРјР°С‚Рµ
         /// </summary>
         public string Phone { get; set; }
 

@@ -10,6 +10,7 @@ namespace Megaplan.API.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
     using Megaplan.API.Models;
@@ -144,33 +145,7 @@ namespace Megaplan.API.Tests
             Assert.AreEqual(comments.Count - 1, afterComments.Count);
         }
 
-
-        [Test]
-        [Category("Manual")]
-        public async void DeadLock()
-        {
-            await Authorize();
-            var id = 1001702;
-            Card card;
-//            for (int a = 0; a < 1000; a++)
-//            {
-//                card = await client.Card(id);
-//            }
-            card = await client.Card(1001713);
-            await client.TaskAction(id, ActionEnum.act_done);
-//            card = await client.Card(id);
-            await client.TaskAction(id, ActionEnum.act_resume);
-
-            await client.TaskAction(id, ActionEnum.act_done);
-            //            card = await client.Card(id);
-
-
-            //            card = await client.Card(id);
-            Console.Out.WriteLine("Yay");
-        }
-
-
-
+        
         [Test]
         [Category("Manual")]
         public async void DownloadFile() 
@@ -282,6 +257,29 @@ namespace Megaplan.API.Tests
             var res = await client.AddComment(addCommentQueryParams);
 
             Assert.That(res, Is.Not.Null);
+        }
+        
+        [Test]
+        [Category("Manual")]
+        public async void AvailibleTaskActionsTests()
+        {
+            await Authorize();
+            var tasks = await client.Tasks();
+            var task = tasks.First();
+            var actions = await client.AvailibleTaskActions(task.Id);
+
+            Assert.That(actions.Any(), Is.True);
+        }
+        
+        [Test]
+        [Category("Manual")]
+        public async void TaskAction()
+        {
+            await Authorize();
+            var tasks = await client.Tasks();
+            var task = tasks.First();
+            await client.TaskAction(task.Id, TaskActionType.AcceptTask);
+            
         }
 
         #endregion

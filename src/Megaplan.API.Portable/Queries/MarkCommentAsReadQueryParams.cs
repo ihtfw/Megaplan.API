@@ -1,19 +1,19 @@
-namespace Megaplan.API.Queries
+п»їnamespace Megaplan.API.Queries
 {
     using System.Collections.Generic;
 
     /// <summary>
-    /// Отметить комментарий как прочитанный
+    /// РћС‚РјРµС‚РёС‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёР№ РєР°Рє РїСЂРѕС‡РёС‚Р°РЅРЅС‹Р№
     /// </summary>
     public class MarkCommentAsReadQueryParams
     {
         /// <summary>
-        /// Код комментария
+        /// РљРѕРґ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Список кодов комментариев
+        /// РЎРїРёСЃРѕРє РєРѕРґРѕРІ РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ
         /// </summary>
         public List<int> IdList { get; set; }
 

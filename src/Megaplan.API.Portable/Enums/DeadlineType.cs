@@ -1,7 +1,7 @@
-namespace Megaplan.API.Enums
+п»їnamespace Megaplan.API.Enums
 {
     /// <summary>
-    /// Фиг знает какие тут поля, в доках не нашёл
+    /// Р¤РёРі Р·РЅР°РµС‚ РєР°РєРёРµ С‚СѓС‚ РїРѕР»СЏ, РІ РґРѕРєР°С… РЅРµ РЅР°С€С‘Р»
     /// </summary>
     public enum DeadlineType
     {

@@ -1,17 +1,17 @@
-namespace Megaplan.API.Enums
+п»їnamespace Megaplan.API.Enums
 {
     public enum EmployeeOrderByType
     {
         /// <summary>
-        ///  имя сотрудника
+        ///  РёРјСЏ СЃРѕС‚СЂСѓРґРЅРёРєР°
         /// </summary>
         Name,
         /// <summary>
-        /// название отдела
+        /// РЅР°Р·РІР°РЅРёРµ РѕС‚РґРµР»Р°
         /// </summary>
         Department,
         /// <summary>
-        ///  должность сотрудника
+        ///  РґРѕР»Р¶РЅРѕСЃС‚СЊ СЃРѕС‚СЂСѓРґРЅРёРєР°
         /// </summary>
         Position
     }

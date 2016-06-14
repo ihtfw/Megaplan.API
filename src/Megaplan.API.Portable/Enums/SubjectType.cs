@@ -1,21 +1,21 @@
-namespace Megaplan.API.Enums
+п»їnamespace Megaplan.API.Enums
 {
     public enum SubjectType
     {
         /// <summary>
-        /// задача
+        /// Р·Р°РґР°С‡Р°
         /// </summary>
         Task,
         /// <summary>
-        /// проект
+        /// РїСЂРѕРµРєС‚
         /// </summary>
         Project,
         /// <summary>
-        /// клиент
+        /// РєР»РёРµРЅС‚
         /// </summary>
         Contractor,
         /// <summary>
-        /// сделка
+        /// СЃРґРµР»РєР°
         /// </summary>
         Deal
     }

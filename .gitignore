@@ -190,3 +190,4 @@ _Pvt_Extensions/
 ModelManifest.xml
 /src/NuGetBuild
 /src/packages
+*.scgdat

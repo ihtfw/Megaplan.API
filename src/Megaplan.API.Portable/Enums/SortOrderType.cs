@@ -1,13 +1,13 @@
-namespace Megaplan.API.Enums
+п»їnamespace Megaplan.API.Enums
 {
     public enum SortOrderType
     {
         /// <summary>
-        /// по возрастанию
+        /// РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ
         /// </summary>
         Asc,
         /// <summary>
-        /// по убыванию
+        /// РїРѕ СѓР±С‹РІР°РЅРёСЋ
         /// </summary>
         Desc
     }

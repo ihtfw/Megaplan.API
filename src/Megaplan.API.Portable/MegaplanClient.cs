@@ -16,6 +16,7 @@
     using Megaplan.API.Queries;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Linq;
 
     using Task = System.Threading.Tasks.Task;
@@ -84,6 +85,11 @@
 
         #endregion
 
+        /// <summary>
+        /// Серверное время
+        /// https://help.megaplan.ru/API_system_datetime
+        /// </summary>
+        /// <returns></returns>
         public async Task<DateTime> ServerTime()
         {
             var response = await GetRequest("/BumsCommonApiV01/System/datetime.api", false).ConfigureAwait(false);
@@ -140,16 +146,7 @@
         public int EmployeeId { get; private set; }
 
         public int UserId { get; private set; }
-
-        public Task TaskAction(int taskId, ActionEnum action)
-        {
-            return MakePostRequest("/BumsTaskApiV01/Task/action.api", new
-                                                                      {
-                                                                          Id = taskId,
-                                                                          Action = action
-                                                                      });
-        }
-
+        
         private JToken ParseResponse(string response)
         {
             var jObject = JObject.Parse(response);
@@ -157,10 +154,20 @@
             {
                 throw new HttpRequestException((string)jObject["status"]["error"]);
             }
+
+            if (jObject.Children().Any(c => c.Path == "data"))
+            {
 #if DEBUG
-            Debug.WriteLine("data {0}", jObject["data"].ToString());
+                Debug.WriteLine("data {0}", jObject["data"].ToString());
 #endif
-            return jObject["data"];
+                return jObject["data"];
+            }
+
+            var lastToken = jObject.Last;
+#if DEBUG
+            Debug.WriteLine($"{lastToken.Path} {lastToken}");
+#endif
+            return lastToken;
         }
 
         #region Tasks
@@ -185,6 +192,36 @@
         public Task<List<Models.Task>> Tasks(TasksQueryParams queryParams = null)
         {
             return MakeGetRequest<List<Models.Task>>("/BumsTaskApiV01/Task/list.api", "tasks", queryParams);
+        }
+        
+        /// <summary>
+        /// Действие над задачей
+        /// https://help.megaplan.ru/API_task_action
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public Task TaskAction(int taskId, TaskActionType action)
+        {
+            return MakePostRequest("/BumsTaskApiV01/Task/action.api", new 
+            {
+                Id = taskId,
+                Action = action
+            });
+        }
+
+        /// <summary>
+        /// Допустимые действия над задачей
+        /// https://help.megaplan.ru/API_task_available_actions
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
+        public Task<List<TaskActionType>> AvailibleTaskActions(int taskId)
+        {
+            return MakePostRequest<List<TaskActionType>>("/BumsTaskApiV01/Task/availableActions.api", "actions", new
+            {
+                Id = taskId
+            });
         }
 
         #endregion
@@ -277,6 +314,7 @@
 
         #region Helpers
 
+        StringEnumConverter StringEnumConverter = new StringEnumConverter();
         public async Task<T> MakeGetRequest<T>(string baseQuery, string jsonKey, object queryParams = null)
         {
             using(var response = await GetRequest(baseQuery + new QueryBuider(queryParams).Build(), true).ConfigureAwait(false))
@@ -285,7 +323,7 @@
 
                 var jData = ParseResponse(content);
                 var data = jData[jsonKey].ToString();
-                var tasks = JsonConvert.DeserializeObject<T>(data);
+                var tasks = JsonConvert.DeserializeObject<T>(data, StringEnumConverter);
                 return tasks;
             }
         }
@@ -296,9 +334,26 @@
             {
                 var content = response.Content();
 
+                string data = null;
                 var jData = ParseResponse(content);
-                var data = jData[jsonKey].ToString();
-                var tasks = JsonConvert.DeserializeObject<T>(data);
+                if (jData is JProperty)
+                {
+                    foreach (var child in jData.Children())
+                    {
+                        if (child.Path == jsonKey)
+                        {
+                            data = child.ToString();
+                        }
+                    }
+                    if (data == null)
+                        throw new ArgumentException("Not found: " + jsonKey);
+                }
+                else
+                {
+                    data = jData[jsonKey].ToString();
+                }
+                
+                var tasks = JsonConvert.DeserializeObject<T>(data, StringEnumConverter);
                 return tasks;
             }
         }
