@@ -200,7 +200,6 @@
       <Link>Request.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\TaskTakeActionQueryParams.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />

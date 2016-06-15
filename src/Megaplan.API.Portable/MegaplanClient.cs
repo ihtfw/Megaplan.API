@@ -386,13 +386,13 @@
         }
 
 #if !PCL
-        public Task Download(string url, string path, CancellationToken ct, IProgress<DownloadProgressArgs> progress)
+        public async Task Download(string url, string path, CancellationToken ct, IProgress<DownloadProgressArgs> progress)
         {
             try
             {
                 using (var filestream = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    return Download(url, filestream, ct, progress);
+                    await Download(url, filestream, ct, progress);
                 }
             }
             catch

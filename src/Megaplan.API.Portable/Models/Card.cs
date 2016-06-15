@@ -14,7 +14,7 @@ namespace Megaplan.API.Models
         /// Суть задачи
         /// </summary>
         public string Statement { get; set; }
-        
+
         /// <summary>
         /// Старт задачи
         /// </summary>
@@ -44,8 +44,6 @@ namespace Megaplan.API.Models
         /// еотвеченный запрос на перенос дедлайна
         /// </summary>
         public DeadlineChange DeadlineChange { get; set; }
-
-
 
         public StatusType Status { get; set; }
 

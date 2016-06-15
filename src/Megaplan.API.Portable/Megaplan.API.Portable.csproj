@@ -84,7 +84,6 @@
     <Compile Include="Queries\EmployeesQueryParams.cs" />
     <Compile Include="Queries\MarkCommentAsReadQueryParams.cs" />
     <Compile Include="Queries\TasksQueryParams.cs" />
-    <Compile Include="Queries\TaskTakeActionQueryParams.cs" />
     <Compile Include="QueryBuider.cs" />
     <Compile Include="Raksha\GeneralDigest.cs" />
     <Compile Include="Raksha\Hex.cs" />
