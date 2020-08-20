@@ -1,2 +1,2 @@
 # Megaplan.API
-Simple API implementation for https://megaplan.ru/ for .net45
+Simple API implementation for https://megaplan.ru/ for netstandard2.0
