@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
-using System.Reflection;
 using System.Threading;
 using Megaplan.API.Enums;
 using Newtonsoft.Json;
@@ -10,10 +8,6 @@ namespace Megaplan.API.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
-
-    using Megaplan.API.Models;
     using Megaplan.API.Queries;
     using NUnit.Framework;
     using Task = System.Threading.Tasks.Task;
@@ -76,7 +70,7 @@ namespace Megaplan.API.Tests
         }
 
         [Test]
-        public async void AuthorizeWithWrongLoginPass()
+        public async Task AuthorizeWithWrongLoginPass()
         {
             await client.Authorize("login", "pass");
 
@@ -87,7 +81,7 @@ namespace Megaplan.API.Tests
 
 
         [Test]
-        public async void AuthorizeWithCorrectLoginPass()
+        public async Task AuthorizeWithCorrectLoginPass()
         {
             await Authorize();
 
@@ -95,7 +89,7 @@ namespace Megaplan.API.Tests
         }
 
         [Test]
-        public async void ServerTimeTest()
+        public async Task ServerTimeTest()
         {
             var time = await client.ServerTime();
         }
@@ -103,7 +97,7 @@ namespace Megaplan.API.Tests
         #region Comments
 
         [Test]
-        public async void CommentsTest()
+        public async Task CommentsTest()
         {
             await Authorize();
             var task = (await client.Tasks(TasksQueryParams.Responsible())).First();
@@ -113,7 +107,7 @@ namespace Megaplan.API.Tests
         }
 
         [Test]
-        public async void AllCommentsTest()
+        public async Task AllCommentsTest()
         {
             await Authorize();
             var comments = await client.Comments(AllCommentsQueryParams.Actual());
@@ -122,7 +116,7 @@ namespace Megaplan.API.Tests
         }
 
         [Test]
-        public async void UnreadCommentsTest()
+        public async Task UnreadCommentsTest()
         {
             await Authorize();
             var comments = await client.UnreadComments(AllCommentsQueryParams.Actual());
@@ -131,7 +125,7 @@ namespace Megaplan.API.Tests
         }
 
         [Test]
-        public async void MarkCommentAsReadTest()
+        public async Task MarkCommentAsReadTest()
         {
             await Authorize();
 
@@ -148,7 +142,7 @@ namespace Megaplan.API.Tests
         
         [Test]
         [Category("Manual")]
-        public async void DownloadFile() 
+        public async Task DownloadFile() 
         {
             await Authorize();
 
@@ -162,11 +156,11 @@ namespace Megaplan.API.Tests
 
         [Test]
         [Category("Manual")]
-        public async void AddCommentTest()
+        public async Task AddCommentTest()
         {
             await Authorize();
 
-            var id = 1001537;
+            var id = 1004874;
             var card = await client.Card(id);
             await client.AddComment(AddCommentQueryParams.Task(id, "New comment text"));
         }
@@ -176,7 +170,7 @@ namespace Megaplan.API.Tests
         #region Tasks
 
         [Test]
-        public async void TasksNoParamsTest()
+        public async Task TasksNoParamsTest()
         {
             await Authorize();
             var task = await client.Tasks();
@@ -185,7 +179,7 @@ namespace Megaplan.API.Tests
         }
 
         [Test]
-        public async void TasksResponsibleTest()
+        public async Task TasksResponsibleTest()
         {
             await Authorize();
             var task = await client.Tasks(TasksQueryParams.Responsible());
@@ -195,7 +189,7 @@ namespace Megaplan.API.Tests
 
         [Test]
         [Category("Manual")]
-        public async void AddTaskTest()
+        public async Task AddTaskTest()
         {
             await Authorize();
             var task = await client.AddTask(AddTaskQueryParams.Simple("Тестовое название", "тестовоя суть задачи", 1000001));
@@ -205,7 +199,7 @@ namespace Megaplan.API.Tests
 
         [Test]
         [Category("Manual")]
-        public async void AddTaskToEmployeeTest()
+        public async Task AddTaskToEmployeeTest()
         {
             await Authorize();
 
@@ -217,7 +211,7 @@ namespace Megaplan.API.Tests
 
         [Test]
         [Category("Manual")]
-        public async void AddTaskToEmployeeFromClientTest()
+        public async Task AddTaskToEmployeeFromClientTest()
         {
             await Authorize();
 
@@ -233,7 +227,7 @@ namespace Megaplan.API.Tests
 
         [Test]
         [Category("Manual")]
-        public async void AddTaskTestWithAttachment()
+        public async Task AddTaskTestWithAttachment()
         {
             await Authorize();
             var addTaskQueryParams = AddTaskQueryParams.Simple("Тестовое название", "тестовая суть задачи", 1000001);
@@ -249,7 +243,7 @@ namespace Megaplan.API.Tests
 
         [Test]
         [Category("Manual")]
-        public async void AddComentWithAttchment()
+        public async Task AddComentWithAttchment()
         {
             await Authorize();
 //            var attachment = new Attachment{ Name = "231.txt", Content = Convert.ToBase64String(System.Text.Encoding.Default.GetBytes("содержимое файла 1")) };
@@ -261,7 +255,7 @@ namespace Megaplan.API.Tests
         
         [Test]
         [Category("Manual")]
-        public async void AvailibleTaskActionsTests()
+        public async Task AvailibleTaskActionsTests()
         {
             await Authorize();
             var tasks = await client.Tasks();
@@ -273,7 +267,7 @@ namespace Megaplan.API.Tests
         
         [Test]
         [Category("Manual")]
-        public async void TaskAction()
+        public async Task TaskAction()
         {
             await Authorize();
             var tasks = await client.Tasks();
@@ -287,7 +281,7 @@ namespace Megaplan.API.Tests
         #region Employees
 
         [Test]
-        public async void EmployeesNoParamsTest()
+        public async Task EmployeesNoParamsTest()
         {
             await Authorize();
             var employees = await client.Employees();
@@ -296,7 +290,7 @@ namespace Megaplan.API.Tests
         }
 
         [Test]
-        public async void EmployeesFilterByNameTest()
+        public async Task EmployeesFilterByNameTest()
         {
             await Authorize();
             var employees = await client.Employees(EmployeesQueryParams.FilterByName(settings.ExistingEmployeeName));
@@ -305,7 +299,7 @@ namespace Megaplan.API.Tests
         }
 
         [Test]
-        public async void EmployeeCardTest()
+        public async Task EmployeeCardTest()
         {
             await Authorize();
             var employees = await client.Employees(EmployeesQueryParams.FilterByName(settings.ExistingEmployeeName));
@@ -318,7 +312,7 @@ namespace Megaplan.API.Tests
         #region Clients
 
         [Test]
-        public async void ClientsNoParamsTest()
+        public async Task ClientsNoParamsTest()
         {
             await Authorize();
             var clients = await client.Clients();
@@ -327,7 +321,7 @@ namespace Megaplan.API.Tests
         }
 
         [Test]
-        public async void ClientCardTest()
+        public async Task ClientCardTest()
         {
             await Authorize();
             var clients = await client.Clients(ClientsQueryParams.WithFilter(settings.ExistingClientName));
@@ -337,7 +331,7 @@ namespace Megaplan.API.Tests
         }
 
         [Test]
-        public async void ClientsFilterTest()
+        public async Task ClientsFilterTest()
         {
             await Authorize();
             var clients = await client.Clients(ClientsQueryParams.WithFilter(settings.ExistingClientName));

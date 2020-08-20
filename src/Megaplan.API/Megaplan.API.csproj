@@ -1,221 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{73AADF71-5238-48F6-956D-86452A7610AF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Megaplan.API</RootNamespace>
-    <AssemblyName>Megaplan.API</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Authors>Vadim Kandrushin</Authors>
+    <Description>super simple client to manage tasks in megaplan CRM</Description>
+    <RepositoryUrl>https://github.com/ihtfw/Megaplan.API</RepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>nMegaplan.API</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Product>nMegaplan.API</Product>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>megaplan</PackageTags>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Version>2008.20.1</Version>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Megaplan.API.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Megaplan.API.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Megaplan.API.Portable\Attributes\PropAttributes.cs">
-      <Link>Attributes\PropAttributes.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\DownloadProgressArgs.cs">
-      <Link>DownloadProgressArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Enums\DeadlineType.cs">
-      <Link>Enums\DeadlineType.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Enums\EmployeeOrderByType.cs">
-      <Link>Enums\EmployeeOrderByType.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Enums\FolderType.cs">
-      <Link>Enums\FolderType.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Enums\GenderType.cs">
-      <Link>Enums\GenderType.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Enums\PhoneType.cs">
-      <Link>Enums\PhoneType.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Enums\SortByType.cs">
-      <Link>Enums\SortByType.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Enums\SortOrderType.cs">
-      <Link>Enums\SortOrderType.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Enums\StatusType.cs">
-      <Link>Enums\StatusType.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Enums\SubjectType.cs">
-      <Link>Enums\SubjectType.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Enums\TaskActionType.cs">
-      <Link>Enums\TaskActionType.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Exceptions\AuthorizeException.cs">
-      <Link>Exceptions\AuthorizeException.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Extensions.cs">
-      <Link>Extensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Hashes.cs">
-      <Link>Hashes.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\HttpWebRequestExtensions.cs">
-      <Link>HttpWebRequestExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\IMegaplanClient.cs">
-      <Link>IMegaplanClient.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\MegaplanClient.cs">
-      <Link>MegaplanClient.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Attach.cs">
-      <Link>Models\Attach.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\BaseModel.cs">
-      <Link>Models\BaseModel.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\BoolToIntConverter.cs">
-      <Link>Models\BoolToIntConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Card.cs">
-      <Link>Models\Card.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Client.cs">
-      <Link>Models\Client.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Comment.cs">
-      <Link>Models\Comment.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Customer.cs">
-      <Link>Models\Customer.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\DeadlineChange.cs">
-      <Link>Models\DeadlineChange.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Department.cs">
-      <Link>Models\Department.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Employee.cs">
-      <Link>Models\Employee.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Folder.cs">
-      <Link>Models\Folder.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Phone.cs">
-      <Link>Models\Phone.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Position.cs">
-      <Link>Models\Position.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Project.cs">
-      <Link>Models\Project.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Status.cs">
-      <Link>Models\Status.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Tag.cs">
-      <Link>Models\Tag.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Task.cs">
-      <Link>Models\Task.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\TaskQueryParams.cs">
-      <Link>Models\TaskQueryParams.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Models\Type.cs">
-      <Link>Models\Type.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Queries\AddCommentQueryParams.cs">
-      <Link>Queries\AddCommentQueryParams.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Queries\AddTaskQueryParams.cs">
-      <Link>Queries\AddTaskQueryParams.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Queries\AllCommentsQueryParams.cs">
-      <Link>Queries\AllCommentsQueryParams.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Queries\Attachment.cs">
-      <Link>Queries\Attachment.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Queries\ClientsQueryParams.cs">
-      <Link>Queries\ClientsQueryParams.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Queries\CommentsQueryParams.cs">
-      <Link>Queries\CommentsQueryParams.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Queries\EmployeesQueryParams.cs">
-      <Link>Queries\EmployeesQueryParams.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Queries\MarkCommentAsReadQueryParams.cs">
-      <Link>Queries\MarkCommentAsReadQueryParams.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Queries\TasksQueryParams.cs">
-      <Link>Queries\TasksQueryParams.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\QueryBuider.cs">
-      <Link>QueryBuider.cs</Link>
-    </Compile>
-    <Compile Include="..\Megaplan.API.Portable\Request.cs">
-      <Link>Request.cs</Link>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="key.snk" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
